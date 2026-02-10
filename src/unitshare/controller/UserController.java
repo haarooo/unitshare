@@ -1,2 +1,4 @@
-public class UserController {
+package unitshare.controller;
+
+public class UserController{
 }
