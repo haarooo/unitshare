@@ -1,4 +1,4 @@
-package unitshare.view.유;
+package unitshare.view;
 
 public class ProductView {
 }

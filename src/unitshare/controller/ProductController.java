@@ -1,4 +1,4 @@
-package unitshare.controller.김;
+package unitshare.controller;
 
 public class ProductController {
 }
