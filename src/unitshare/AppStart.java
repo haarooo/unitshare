@@ -8,6 +8,8 @@ import unitshare.view.ProductView;
 
 import unitshare.view.UserView;
 
+import unitshare.view.UserView;
+
 public class AppStart {
     public static void main(String[] args) {
     }

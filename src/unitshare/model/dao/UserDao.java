@@ -5,6 +5,9 @@ import unitshare.model.dto.UserDto;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class UserDao {
     //싱글톤 생성
@@ -14,9 +17,10 @@ public class UserDao {
         return instance;
     }
 
+    private ArrayList<UserDto> UserDtos = new ArrayList<>();
 
     //db연동
-    private String url="jdbc:mysql://localhost:3306/unishare";
+    private String url = "jdbc:mysql://localhost:3306/unishare";
     private String user = "root";
     private String pw = "1234";
     private Connection conn;
@@ -41,5 +45,23 @@ public class UserDao {
         if(result){currentUno++;}
         return result;
     }// [1] end // 0211 수정
+    // 로그인(현재 정보와 기존 정보를 비교)
+    public boolean login(String id, String pwd) {
+        System.out.println("UserDao.login");
+        try { // SQL 작성 : 입력받은 id와 pwd가 일치하는 레코드가 있는지 확인
+            String sql = "select * from user where id = ? AND pwd = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            ps.setString(2, pwd);
 
-} //class end
+            ResultSet rs = ps.executeQuery(); // 쿼리 실행 결과 받기
+
+            if (rs.next()) {
+                return true; // 레코드가 하나라도 존재하면 로그인 성공
+            }
+        }catch (Exception e){
+            System.out.println("[경고] 로그인 처리 중 에러 : " + e);
+        }
+        return false;
+    } // m END
+} // class END

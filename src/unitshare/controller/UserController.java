@@ -18,4 +18,14 @@ public class UserController {
         return result;
     } // [1] end // 0211 수정
 
+
+    private UserDao ud = UserDao.getInstance();
+    // 로그인 메소드
+    public boolean login(String id , String pwd){
+        System.out.println("UserController.login");
+        System.out.println("id = " + id + ", pwd = " + pwd);
+        boolean result = ud.login(id,pwd);
+        return result;
+    }
+
 }
