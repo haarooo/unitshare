@@ -11,8 +11,11 @@ import java.util.ArrayList;
 
 public class UserDao {
     //싱글톤 생성
-    private UserDao(){}
+    private UserDao() {connect(); // <--- 아!!!!!!!!!! 객체가 생성될 때 DB 연동을 시작합니다.
+    }
+
     public static final UserDao instance = new UserDao();
+
     public static UserDao getInstance() {
         return instance;
     }
@@ -25,7 +28,7 @@ public class UserDao {
     private String pw = "1234";
     private Connection conn;
 
-    private void connect() {
+    private void connect() { // conn 변수에 DB 연결 정보가 담김.
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url, user, pw);
@@ -44,6 +47,7 @@ public class UserDao {
         boolean result = users.add(userDto);
         if(result){currentUno++;}
         return result;
+
     }// [1] end // 0211 수정
     // 로그인(현재 정보와 기존 정보를 비교)
     public boolean login(String id, String pwd) {

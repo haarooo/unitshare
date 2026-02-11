@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 
 public class UserView {
-    private UserView(){}
+    private UserView() {}
     private static final UserView instance = new UserView();
     public static UserView getInstance() {return instance;}
 
@@ -19,6 +19,7 @@ public class UserView {
     private UserController us = UserController.getInstance();
 
     private Scanner scan = new Scanner(System.in); // 스캐너 멤버변수로 빼면 더 편리함.
+
     // [*] 메인페이지
     public void index() {
         for (; ; ) {
@@ -68,7 +69,7 @@ public class UserView {
         String id = scan.next();
         System.out.println("비밀번호 : ");
         String pwd = scan.next();
-        boolean result = uc.login(id,pwd);
+        boolean result = uc.login(id, pwd);
         if (result) {
             System.out.println("[안내] 로그인에 성공하였습니다.");
         } else {
