@@ -73,3 +73,4 @@ INSERT INTO participant (status, pno, uno) VALUES
 
 select*from user;
 select*from product;
+select*from participant;

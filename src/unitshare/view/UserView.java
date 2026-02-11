@@ -23,14 +23,13 @@ public class UserView {
                 System.out.println("=====================================================================");
                 System.out.println("선택>");
                 int ch = scan.nextInt();
-                if (ch == 1) {
+
+                if (ch == 1) {signup();
                 } else if (ch == 2) {
                     login();
                 } else if (ch == 3) {
                 } else if (ch == 4) {
-                } else {
-                    System.out.println("[경고] 없는 기능 번호입니다.");
-                }
+                } else {System.out.println("[경고] 없는 기능 번호입니다.");}
             } catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다.");
                 scan = new Scanner(System.in); // 입력객체 초기화

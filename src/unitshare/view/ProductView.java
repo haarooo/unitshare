@@ -4,6 +4,7 @@ import unitshare.controller.ProductController;
 import unitshare.model.dto.ProductDto;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ProductView {
@@ -12,6 +13,30 @@ public class ProductView {
     public static ProductView getInstance(){return instance;}
     //호출
     private ProductController pc = ProductController.getInstance();
+
+    //로그인 이후 페이지
+    public void index2() {
+        for (; ; ) {
+            try {
+                System.out.println("================================ Unit share for solo ================================");
+                System.out.println("1. 물품등록 2. 전체 공동구매 목록 조회 및 신청 3. 내 구매 신청목록 4. 공구참여취소 5. 물품등록취소");
+                System.out.println("=====================================================================================");
+                System.out.println("선택>");
+                int ch = scan.nextInt();
+                if (ch == 1) {productAdd();
+                } else if (ch == 2) {findAll();
+                } else if (ch == 3) {
+                } else if (ch == 4) {test();
+                } else if (ch == 5) {test2();
+                }else {System.out.println("[경고] 없는 기능 번호입니다.");}
+            } catch (InputMismatchException e) {
+                System.out.println("[경고] 잘못된 입력 방식입니다.");
+                scan = new Scanner(System.in); // 입력객체 초기화
+            } catch (Exception e) {
+                System.out.println("[시스템 오류] 관리자에게 문의하십시오.");
+            }
+        }
+    }
 
 
     //20. 물품등록
@@ -22,6 +47,7 @@ public class ProductView {
         scan.nextLine();
         System.out.print("설명 : "); String pcontent = scan.nextLine();
         System.out.print("인원수 : "); int people = scan.nextInt();
+        if(people > 5){System.out.println("최대 4명까지 가능합니다");return;}
         scan.nextLine();
         System.out.print("오픈채팅링크 : "); String openchat = scan.nextLine();
         boolean result = pc.productAdd(pname, pprice ,pcontent ,people ,openchat);
