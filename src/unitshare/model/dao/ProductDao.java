@@ -1,7 +1,9 @@
 package unitshare.model.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import unitshare.model.dto.ProductDto;
+
+import java.sql.*;
+import java.util.ArrayList;
 
 public class ProductDao {
     //싱글톤 생성
@@ -26,7 +28,5 @@ public class ProductDao {
             System.out.println("연동실패");
         }
     }
-
-
 
 }
