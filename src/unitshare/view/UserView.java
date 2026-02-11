@@ -15,19 +15,21 @@ public class UserView {
         return instance;
     }
 
-    private UserController us = UserController.getInstance();
+    private UserController us = UserController.getInstance(); // 0211 수정
 
-    private Scanner scan = new Scanner(System.in); // 입력객체
+    private Scanner scan = new Scanner(System.in); // 0211 수정
 
     // [*] 메인 페이지
     public void index() {
         for (; ; ) {
-            System.out.print("1.회원가입 2.로그인  선택>");
-            int ch = scan.nextInt();
+            System.out.println("================ Unit share for solo ================");
+            System.out.println("1. 회원가입  2. 로그인   3. 아이디 찾기  4. 비밀번호 찾기 ");
+            System.out.println("=====================================================");
+            System.out.println(" 선택 > ");       int ch = scan.nextInt();
             if (ch == 1) {signup();}
             else if (ch == 2) {}
         }
-    }
+    }// [*] end // 0211 수정
 
     // [1] 회원가입 View
     public void signup() {
@@ -40,7 +42,7 @@ public class UserView {
         System.out.print("연락처 : ");
         String phone = scan.next();
         boolean result = us.signup(id, pwd, name, phone);
-        if (result == true) {System.out.println("회원가입 성공");}
-        else {System.out.println("회원가입 실패");}
-    } // [1] end
+        if (result == true) {System.out.println("[안내] 회원가입이 완료되었습니다.");}
+        else {System.out.println("[안내] 회원가입에 실패하였습니다.");}
+    } // [1] end // 0211 수정
 } // class end

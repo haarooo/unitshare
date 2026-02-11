@@ -31,9 +31,9 @@ public class UserDao {
         }
     }
 
-    private ArrayList< UserDto > users = new ArrayList<>();
+    private ArrayList< UserDto > users = new ArrayList<>(); // 0211 수정
 
-    private int currentUno = 1;
+    private int currentUno = 1; // 0211 수정
     // [1] 회원가입 Dao
     public boolean signup(String id, String pwd, String name, String phone ){
         System.out.println("UserDao.signup");
@@ -42,6 +42,6 @@ public class UserDao {
         boolean result = users.add(userDto);
         if(result){currentUno++;}
         return result;
-    }// [1] end
+    }// [1] end // 0211 수정
 
 } //class end
