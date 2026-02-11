@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class UserDao {
     //싱글톤 생성
     private UserDao() {
+    connect(); // <--- 아!!!!!!!!!! 객체가 생성될 때 DB 연동을 시작합니다.
     }
 
     public static final UserDao instance = new UserDao();
@@ -19,15 +20,13 @@ public class UserDao {
         return instance;
     }
 
-    private ArrayList<UserDto> UserDtos = new ArrayList<>();
-
     //db연동
     private String url = "jdbc:mysql://localhost:3306/unishare";
     private String user = "root";
     private String pw = "1234";
     private Connection conn;
 
-    private void connect() {
+    private void connect() { // conn 변수에 DB 연결 정보가 담김.
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url, user, pw);
