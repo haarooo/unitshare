@@ -1,7 +1,10 @@
 package unitshare.model.dao;
 
+import unitshare.model.dto.UserDto;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.ArrayList;
 
 public class UserDao {
     //싱글톤 생성
@@ -27,5 +30,16 @@ public class UserDao {
             System.out.println("연동실패");
         }
     }
+
+    private ArrayList< UserDto > users = new ArrayList<>(); // 0211 수정
+
+    private int currentUno = 1; // 0211 수정
+    // [1] 회원가입 Dao
+    public boolean signup(String id, String pwd, String name, String phone ){
+        UserDto userDto = new UserDto( currentUno, id, pwd, phone, name);
+        boolean result = users.add(userDto);
+        if(result){currentUno++;}
+        return result;
+    }// [1] end // 0211 수정
 
 } //class end

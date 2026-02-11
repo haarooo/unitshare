@@ -6,8 +6,9 @@ import unitshare.model.dao.ProductDao;
 import unitshare.model.dao.UserDao;
 import unitshare.view.ProductView;
 
+import unitshare.view.UserView;
+
 public class AppStart {
     public static void main(String[] args) {
-
     }
 }
