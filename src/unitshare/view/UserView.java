@@ -1,5 +1,4 @@
 package unitshare.view;
-
 import unitshare.controller.UserController;
 import java.util.Scanner;
 import java.util.InputMismatchException;
@@ -19,18 +18,27 @@ public class UserView {
         for (; ; ) {
             try {
                 System.out.println("======================== Unit share for solo ========================");
-                System.out.println("1. 회원가입 2. 로그인 3. 아이디 찾기 4. 비밀번호 찾기");
+                if(uc.getLoginSession()==0){System.out.println("1. 회원가입 2. 로그인 3. 아이디 찾기 4. 비밀번호 찾기");}
+                else{
+                    System.out.println("1.로그아웃 2. 물품 등록 3.전체 공동구매 목록 조회 및 신청 4. 내 구매 신청 목록 조회 5.취소");
+                }
                 System.out.println("=====================================================================");
                 System.out.println("선택>");
                 int ch = scan.nextInt();
 
-                if (ch == 1) {signup();
-                } else if (ch == 2) {
-                    login();
-                } else if (ch == 3) {
-                } else if (ch == 4) {
-                } else {System.out.println("[경고] 없는 기능 번호입니다.");}
-            } catch (InputMismatchException e) {
+                if(uc.getLoginSession()==0){ // [로그인 전 메뉴 처리]
+                if (ch == 1) { signup(); }
+                else if (ch == 2) {login();}
+                else if (ch == 3) {}
+                else if (ch == 4) {}
+                else { // [로그인 후 메뉴 처리]
+                    if( ch == 1 ){logout();}
+                    else if( ch == 2){}
+                    else if ( ch == 3) {}
+                    else if ( ch == 4) {}
+                    else if ( ch == 5) {}
+                }
+            } }catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다.");
                 scan = new Scanner(System.in); // 입력객체 초기화
             } catch (Exception e) {
@@ -62,10 +70,17 @@ public class UserView {
         System.out.println("비밀번호 : ");
         String pwd = scan.next();
         boolean result = uc.login(id,pwd);
-        if (result) {
+        if (result==true) {
             System.out.println("[안내] 로그인에 성공하였습니다.");
         } else {
             System.out.println("[경고] 로그인에 실패하였습니다.");
         }
     } // m END
-} // class end
+
+    // 로그아웃
+    public void logout() {
+        uc.logout();
+        System.out.println("[안내] 로그아웃되었습니다.");
+    }
+    } // class END
+
