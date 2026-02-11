@@ -38,7 +38,7 @@ public class UserDao {
     private ArrayList< UserDto > users = new ArrayList<>(); // 0211 수정
 
     private int currentUno = 1; // 0211 수정
-    // [1] 회원가입 Dao
+    // 04. 회원가입 Dao
     public boolean signup(String id, String pwd, String name, String phone ) {
        try{ String sql = "insert into user(id, pwd, name, phone) values(?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -47,7 +47,7 @@ public class UserDao {
             ps.setString(3, name);
             ps.setString(4, phone);
             int count = ps.executeUpdate();
-           if( count == 1 ){ return true; } // 등록한 레코드 수 가 1이면 등록성공
+           if( count == 1 ){ return true; }
            else{ return false; }
         } catch (SQLException e) {System.out.println("[시스템오류] 회원가입 SQL 실행 중 실패 : " + e);}
             return false;

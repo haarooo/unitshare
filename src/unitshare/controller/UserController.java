@@ -10,7 +10,7 @@ public class UserController {
 
     private UserDao ud = UserDao.getInstance(); // 0211 수정
 
-    // [1] 회원가입 Controller
+    // 04. 회원가입 Controller
     public boolean signup( String id, String pwd, String name, String phone){
              // [*] 유효성검사 (중복검사, 데이터 길이검사)
         boolean result = ud.signup( id, pwd, name, phone);
