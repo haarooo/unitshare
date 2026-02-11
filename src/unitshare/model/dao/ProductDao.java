@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class ProductDao {
     //싱글톤 생성
-    private ProductDao(){connect();}
+    private ProductDao(){}
     private static final ProductDao instance = new ProductDao();
     public static ProductDao getInstance() {
         return instance;
