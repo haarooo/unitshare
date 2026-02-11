@@ -25,6 +25,7 @@ public class UserView {
                 int ch = scan.nextInt();
 
                 if (ch == 1) {
+                    signup();
                 } else if (ch == 2) {
                     login();
                 } else if (ch == 3) {

@@ -36,7 +36,9 @@ public class ProductController {
         return result;
     }
 
-    public boolean BoardCancel(int pno, int pwd) {
+
+    //자신이 등록한 물품 등록취소 함수
+    public boolean BoardCancel(int pno, String pwd) {
         boolean result = pd.BoardCancel(pno, pwd);
         return result;
     }

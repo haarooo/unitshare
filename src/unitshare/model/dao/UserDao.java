@@ -11,8 +11,7 @@ import java.util.ArrayList;
 
 public class UserDao {
     //싱글톤 생성
-    private UserDao() {connect(); // <--- 아!!!!!!!!!! 객체가 생성될 때 DB 연동을 시작합니다.
-    }
+    private UserDao() {connect();} // <--- 아!!!!!!!!!! ??? 객체가 생성될 때 DB 연동을 시작합니다.
 
     public static final UserDao instance = new UserDao();
 
@@ -47,7 +46,6 @@ public class UserDao {
         boolean result = users.add(userDto);
         if(result){currentUno++;}
         return result;
-
     }// [1] end // 0211 수정
     // 로그인(현재 정보와 기존 정보를 비교)
     public boolean login(String id, String pwd) {
