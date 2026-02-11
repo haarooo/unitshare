@@ -55,6 +55,5 @@ public class ProductView {
         int pwd = scan.nextInt();
         boolean result = pc.BoardCancel(pno,pwd);
 
-
     }
 }
