@@ -28,5 +28,4 @@ public class UserDao {
         }
     }
 
-
 } //class end

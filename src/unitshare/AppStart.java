@@ -1,4 +1,11 @@
 package unitshare;
 
+import unitshare.model.dao.ProductDao;
+import unitshare.model.dao.UserDao;
+import unitshare.view.ProductView;
+
 public class AppStart {
+    public static void main(String[] args) {
+        ProductView.getInstance().test2();
+    }
 }
