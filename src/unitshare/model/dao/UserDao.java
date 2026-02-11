@@ -34,7 +34,7 @@ public class UserDao {
             conn = DriverManager.getConnection(url, user, pw);
             System.out.println("연동성공");
         } catch (Exception e) {
-            System.out.println("연동실패");
+            System.out.println("연동실패"+e);
         }
     }
 
@@ -48,9 +48,9 @@ public class UserDao {
         if(result){currentUno++;}
         return result;
 
-    }// [1] end // 0211 수정
-    // 로그인(현재 정보와 기존 정보를 비교)
-    public boolean login(String id, String pwd) {
+    }
+    // [2] 로그인(현재 정보와 기존 정보를 비교)
+    public int login(String id, String pwd) {
         System.out.println("UserDao.login");
         try { // SQL 작성 : 입력받은 id와 pwd가 일치하는 레코드가 있는지 확인
             String sql = "select * from user where id = ? AND pwd = ?";
@@ -61,11 +61,11 @@ public class UserDao {
             ResultSet rs = ps.executeQuery(); // 쿼리 실행 결과 받기
 
             if (rs.next()) {
-                return true; // 레코드가 하나라도 존재하면 로그인 성공
+                return rs.getInt("uno");
             }
         }catch (Exception e){
             System.out.println("[경고] 로그인 처리 중 에러 : " + e);
         }
-        return false;
+        return 0;
     } // m END
 } // class END
