@@ -13,4 +13,20 @@ public class ProductController {
 
     private ProductDao pd = ProductDao.getInstance();
 
+
+    //공동구매 취소
+    public boolean  GroupCancel(int pno) {
+        boolean result = pd.GroupCancel(pno);
+        if (result) {
+            System.out.println("공동구매가 정상적으로 취소되었습니다.");
+        } else {
+            System.out.println("취소"); //인원이 다차서 취소할수없습니다로 바꿀예정
+        }
+        return result;
+    }
+
+    public boolean BoardCancel(int pno, int pwd) {
+        boolean result = pd.BoardCancel(pno, pwd);
+        return result;
+    }
 }
