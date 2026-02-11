@@ -12,6 +12,6 @@ import unitshare.view.ProductView;
 
 public class AppStart {
     public static void main(String[] args) {
-        ProductView.getInstance().test2();
+        UserView.getInstance().index();
     }
 }

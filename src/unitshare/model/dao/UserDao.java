@@ -2,8 +2,7 @@ package unitshare.model.dao;
 
 import unitshare.model.dto.UserDto;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,20 +32,28 @@ public class UserDao {
             conn = DriverManager.getConnection(url, user, pw);
             System.out.println("연동성공");
         } catch (Exception e) {
-            System.out.println("연동실패");
+            System.out.println("연동실패" + e);
         }
     }
 
     private ArrayList< UserDto > users = new ArrayList<>(); // 0211 수정
 
     private int currentUno = 1; // 0211 수정
-    // [1] 회원가입 Dao
-    public boolean signup(String id, String pwd, String name, String phone ){
-        UserDto userDto = new UserDto( currentUno, id, pwd, phone, name);
-        boolean result = users.add(userDto);
-        if(result){currentUno++;}
-        return result;
-    }// [1] end // 0211 수정
+    // 04. 회원가입 Dao
+    public boolean signup(String id, String pwd, String name, String phone ) {
+       try{ String sql = "insert into user(id, pwd, name, phone) values(?, ?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            ps.setString(2, pwd);
+            ps.setString(3, name);
+            ps.setString(4, phone);
+            int count = ps.executeUpdate();
+           if( count == 1 ){ return true; }
+           else{ return false; }
+        } catch (SQLException e) {System.out.println("[시스템오류] 회원가입 SQL 실행 중 실패 : " + e);}
+            return false;
+        }
+    // [1] end // 0211 수정
     // 로그인(현재 정보와 기존 정보를 비교)
     public boolean login(String id, String pwd) {
         System.out.println("UserDao.login");

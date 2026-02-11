@@ -23,9 +23,7 @@ public class UserView {
                 System.out.println("=====================================================================");
                 System.out.println("선택>");
                 int ch = scan.nextInt();
-
                 if (ch == 1) {
-                    signup();
                 } else if (ch == 2) {
                     login();
                 } else if (ch == 3) {
