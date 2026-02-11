@@ -14,6 +14,17 @@ public class ProductController {
     private ProductDao pd = ProductDao.getInstance();
 
 
+    //20. 물품등록
+    public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat){
+        boolean result = pd.productAdd(pname, pprice, pcontent, people, openchat);
+        return result;
+    }
+    //21. 전체 공동구매 목록조회
+    public ArrayList<ProductDto> findAll(){
+        ArrayList<ProductDto> result = pd.findAll();
+        return result;
+    }
+
     //공동구매 취소
     public boolean  GroupCancel(int pno) {
         boolean result = pd.GroupCancel(pno);
