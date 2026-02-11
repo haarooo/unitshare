@@ -4,14 +4,14 @@ import unitshare.model.dto.UserDto;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class UserDao {
     //싱글톤 생성
-    private UserDao() {
-    connect(); // <--- 아!!!!!!!!!! 객체가 생성될 때 DB 연동을 시작합니다.
+    private UserDao() {connect(); // <--- 아!!!!!!!!!! 객체가 생성될 때 DB 연동을 시작합니다.
     }
 
     public static final UserDao instance = new UserDao();
@@ -19,6 +19,8 @@ public class UserDao {
     public static UserDao getInstance() {
         return instance;
     }
+
+    private ArrayList<UserDto> UserDtos = new ArrayList<>();
 
     //db연동
     private String url = "jdbc:mysql://localhost:3306/unishare";
@@ -36,6 +38,17 @@ public class UserDao {
         }
     }
 
+    private ArrayList< UserDto > users = new ArrayList<>(); // 0211 수정
+
+    private int currentUno = 1; // 0211 수정
+    // [1] 회원가입 Dao
+    public boolean signup(String id, String pwd, String name, String phone ){
+        UserDto userDto = new UserDto( currentUno, id, pwd, phone, name);
+        boolean result = users.add(userDto);
+        if(result){currentUno++;}
+        return result;
+
+    }// [1] end // 0211 수정
     // 로그인(현재 정보와 기존 정보를 비교)
     public boolean login(String id, String pwd) {
         System.out.println("UserDao.login");
