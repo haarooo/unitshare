@@ -25,13 +25,17 @@ public class UserView {
             System.out.println("================ Unit share for solo ================");
             System.out.println("1. 회원가입  2. 로그인   3. 아이디 찾기  4. 비밀번호 찾기 ");
             System.out.println("=====================================================");
-            System.out.println(" 선택 > ");       int ch = scan.nextInt();
+            System.out.println(" 선택 > ");
+            int ch = scan.nextInt();
             if (ch == 1) {signup();}
-            else if (ch == 2) {}
-        }
-    }// [*] end // 0211 수정
+            else if (ch == 2) { }
+            else if (ch == 3) {}
+            else if (ch == 4) {}
 
-    // [1] 회원가입 View
+        }
+    }// [*] end
+
+    // 04. 회원가입 View
     public void signup() {
         System.out.print("아이디 : ");
         String id = scan.next();
@@ -44,5 +48,7 @@ public class UserView {
         boolean result = us.signup(id, pwd, name, phone);
         if (result == true) {System.out.println("[안내] 회원가입이 완료되었습니다.");}
         else {System.out.println("[안내] 회원가입에 실패하였습니다.");}
-    } // [1] end // 0211 수정
+
+
+    } // 04 end // 0211 수정
 } // class end
