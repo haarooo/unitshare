@@ -45,4 +45,8 @@ public class UserView {
         if (result == true) {System.out.println("[안내] 회원가입이 완료되었습니다.");}
         else {System.out.println("[안내] 회원가입에 실패하였습니다.");}
     } // [1] end // 0211 수정
+
+    // [1] 아이디중복검사 view
+
+    // [2]
 } // class end
