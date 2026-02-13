@@ -1,9 +1,9 @@
 package unitshare.view;
 import unitshare.controller.UserController;
+import unitshare.model.dto.UserDto;
+
 import java.util.Scanner;
 import java.util.InputMismatchException;
-
-
 
 public class UserView {
     private UserView() {}
@@ -29,7 +29,7 @@ public class UserView {
                 if(uc.getLoginSession()==0){ // [로그인 전 메뉴 처리]
                 if (ch == 1) { signup(); }
                 else if (ch == 2) {login();}
-                else if (ch == 3) {}
+                else if (ch == 3) { findIdView();} // 0213 수정
                 else if (ch == 4) {}
                 else { // [로그인 후 메뉴 처리]
                     if( ch == 1 ){logout();}
@@ -47,7 +47,25 @@ public class UserView {
         }
     }
 
-    // [1] 회원가입 View
+    // 02. 아이디찾기 View
+        public void findIdView() {
+            System.out.print("이름 입력: ");
+            String name = scan.next();
+
+            System.out.print("전화번호 입력: ");
+            String phone = scan.next();
+
+            String result = uc.findId(name, phone);
+
+            if(result != null){
+                System.out.println("찾은 아이디 : " + result);
+            } else {
+                System.out.println("일치하는 회원이 없습니다.");
+            }
+        }
+    // 02 end // 0213 수정
+
+    // 04. 회원가입 View
     public void signup() {
         System.out.print("아이디 : ");
         String id = scan.next();
@@ -60,7 +78,7 @@ public class UserView {
         boolean result = uc.signup(id, pwd, name, phone);
         if (result == true) {System.out.println("[안내] 회원가입이 완료되었습니다.");}
         else {System.out.println("[안내] 회원가입에 실패하였습니다.");}
-    } // [1] end // 0211 수정
+    } //04 end
 
     // 로그인 페이지 view
     public void login() {

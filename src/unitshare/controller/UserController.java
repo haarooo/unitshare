@@ -1,5 +1,5 @@
 package unitshare.controller;
-
+import unitshare.model.dto.UserDto;
 import unitshare.model.dao.UserDao;
 
 public class UserController {
@@ -8,14 +8,26 @@ public class UserController {
     private  static final UserController instance = new UserController();
     public static UserController getInstance() {return instance;}
 
-    private UserDao ud = UserDao.getInstance(); // 0211 수정
+
+    private UserDao ud = UserDao.getInstance();
+
+
+    // 02.아이디찾기
+    public String findId(String name, String phone){
+        UserDto dto = ud.findId(name, phone);
+        if(dto != null){
+            return dto.getId();
+        }
+        return null;
+    }
+    // 02 end // 0213
 
     // 04. 회원가입 Controller
     public boolean signup( String id, String pwd, String name, String phone){
              // [*] 유효성검사 (중복검사, 데이터 길이검사)
         boolean result = ud.signup( id, pwd, name, phone);
         return result;
-    } // [1] end // 0211 수정
+    } // 04 end
 
 
     // 로그인 메소드
@@ -41,4 +53,11 @@ public class UserController {
         return loginSession;
     }
 
+    public UserDao getUd() {
+        return ud;
+    }
+
+    public void setUd(UserDao ud) {
+        this.ud = ud;
+    }
 }
