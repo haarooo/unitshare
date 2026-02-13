@@ -19,17 +19,18 @@ public class ProductView {
         for (; ; ) {
             try {
                 System.out.println("================================ Unit share for solo ================================");
-                System.out.println("1.로그아웃 2. 물품 등록 3.전체 공동구매 목록 조회 및 신청 4. 내 구매 신청 목록 조회 5.취소");
+                System.out.println("1.로그아웃 2. 물품 등록 3.전체 공동구매 목록 조회 및 신청 4. 내 구매 신청 목록 조회 5.내가 등록한 물품 글 삭제" +
+                        "6.참여한 공동구매 취소");
                 System.out.println("=====================================================================================");
                 System.out.println("선택>");
                 int ch = scan.nextInt();
-                if (ch == 1) {
-                    UserView.getInstance().logout();
-                } else if (ch == 2) {productAdd();
-                } else if (ch == 3) {findAll();
-                } else if (ch == 4) {mylist();
-                } else if (ch == 5) {test2();
-                }else {System.out.println("[경고] 없는 기능 번호입니다.");}
+                if (ch == 1) {UserView.getInstance().logout();}
+                else if (ch == 2) {productAdd();}
+                else if (ch == 3) {findAll();}
+                else if (ch == 4) {mylist();}
+                else if (ch == 5) {GroupCancel();}
+                else if(ch==6){}
+                else {System.out.println("[경고] 없는 기능 번호입니다.");}
             } catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다.");
                 scan = new Scanner(System.in); // 입력객체 초기화
@@ -60,8 +61,6 @@ public class ProductView {
     }//product Add e
     //테스트용/////////////////////////////////////////////////////
     Scanner scan = new Scanner(System.in);
-
-
     public void test() {
         System.out.print("숫자를 입력;");
         int pno = scan.nextInt();
@@ -85,8 +84,7 @@ public class ProductView {
         }if(apply == 0){index2();}
         else{System.out.println("[경고]신청실패(인원수가 다 찼습니다)");}
     }
-
-    public void test2() {
+    public void GroupCancel() {
         ArrayList<ProductDto> products = pc.findAll();
         for(ProductDto product : products){
             System.out.printf("번호 : %d , 제품명 : %s , 가격 : %d , 설명 : %s , 인원수 : %d , 오픈채팅링크 : %s , 등록일 : %s\n"

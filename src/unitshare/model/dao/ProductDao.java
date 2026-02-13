@@ -78,9 +78,9 @@ public class ProductDao {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps = conn.prepareStatement(sql);
             ps.setInt(1, pno);
-            ps.setString(2,pwd);
+            ps.setString(2, pwd);
             int count = ps.executeUpdate();
-            if (count==1) {
+            if (count == 1) {
                 System.out.println("삭제 성공");
             } else {
                 System.out.println("삭제실패");
