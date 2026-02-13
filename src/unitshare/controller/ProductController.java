@@ -12,11 +12,12 @@ public class ProductController {
     public static ProductController getInstance(){return instance;}
 
     private ProductDao pd = ProductDao.getInstance();
+    private UserController uc = UserController.getInstance();
 
 
-    //20. 물품등록
     public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat){
-        boolean result = pd.productAdd(pname, pprice, pcontent, people, openchat);
+        int uno = uc.getLoginSession();
+        boolean result = pd.productAdd(pname, pprice, pcontent, people, openchat , uno);
         return result;
     }
     //21. 전체 공동구매 목록조회
@@ -42,4 +43,12 @@ public class ProductController {
         boolean result = pd.BoardCancel(pno, pwd);
         return result;
     }
+
+    //공동구매 신청
+    public boolean groupBuying(int pno){
+        int uno = uc.getLoginSession();
+        if(uno == 0) return false;
+        return pd.groupBuying(pno , uno);
+    }
+
 }

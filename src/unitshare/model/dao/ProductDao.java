@@ -36,15 +36,16 @@ public class ProductDao {
     }
 
     //21. 물품등록
-    public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat){
+    public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat , int uno){
         try {
-            String sql = "insert into product(pname , pprice , pcontent , people , openchat)values(?,?,?,?,?)";
+            String sql = "insert into product(pname , pprice , pcontent , people , openchat , uno)values(?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, pname);
             ps.setInt(2, pprice);
             ps.setString(3, pcontent);
             ps.setInt(4, people);
             ps.setString(5, openchat);
+            ps.setInt(6 , uno);
             int count = ps.executeUpdate();
             if (count == 1) {return true;}
             else {return false;}
@@ -94,7 +95,7 @@ public class ProductDao {
     public ArrayList<ProductDto> findAll(){
         ArrayList<ProductDto> products = new ArrayList<>();
         try{
-            String sql = "select * from product";
+            String sql = "SELECT *, (SELECT COUNT(*) FROM participant WHERE participant.pno = product.pno) AS cpeople FROM product";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
@@ -105,11 +106,35 @@ public class ProductDao {
                 String pdate = rs.getString("pdate");
                 String openchat = rs.getString("openchat");
                 int people = rs.getInt("people");
-                ProductDto productDto = new ProductDto(pno , pname , pprice , pcontent , pdate , openchat , people);
+                int cpeople = rs.getInt("cpeople");
+                ProductDto productDto = new ProductDto(pno , pname , pprice , pcontent , pdate , openchat , people, cpeople);
                 products.add(productDto);
             }
         }catch(SQLException e){System.out.println("sql 문법문제 2" + e);}
         return products;
     }
+
+    //공동구매 신청
+    public boolean groupBuying(int pno , int uno){
+        try{
+            String sql = "INSERT INTO participant (pno, uno, status) " +
+                         "SELECT ?, ?, 1 FROM DUAL " +
+                         "WHERE (SELECT COUNT(*) FROM participant WHERE pno = ?) < " +
+                         "(SELECT people FROM product WHERE pno = ?)";
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setInt(1, pno); // 저장할 물품번호
+                ps.setInt(2, uno); // 저장할 회원번호
+                ps.setInt(3, pno); // 현재 인원 체크용 (COUNT)
+                ps.setInt(4, pno); // 등록된 인원수 제한값 가져오기용 (people)
+
+                // 영향을 받은 행의 수가 1이면 성공, 0이면 인원 초과로 실패
+                int count = ps.executeUpdate();
+                if(count == 1){return true;}
+                else{return false;}
+
+            }catch (SQLException e) {System.out.println("sql 문법문제3" + e);}
+            return false;
+    }
+
 
 }
