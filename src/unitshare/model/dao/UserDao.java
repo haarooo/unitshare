@@ -60,6 +60,29 @@ public class UserDao {
         }
     // 02 end // 0213 수정
 
+    // 03. 비밀번호 찾기 Dao
+    public UserDto findPwd( String id, String phone ){
+        String sql ="select * from user where id = ? and phone = ?";
+        try(
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, id);
+            ps.setString(2, phone);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    UserDto dto = new UserDto();
+                    dto.setUno(rs.getInt("uno"));
+                    dto.setId(rs.getString("id"));
+                    dto.setPwd(rs.getString("pwd"));
+                    dto.setPhone(rs.getString("phone"));
+                    dto.setName(rs.getString("name"));
+                    return dto;
+                }
+            }
+        }catch (Exception e){e.printStackTrace();}
+        return null;
+    }
+    // 03 end // 0213 수정
+
     // 04. 회원가입 Dao
     private int currentUno = 1; // 0211 수정
     public boolean signup(String id, String pwd, String name, String phone ) {
