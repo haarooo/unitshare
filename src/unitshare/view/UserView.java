@@ -114,9 +114,7 @@ public class UserView {
         boolean result = uc.logout();
         if(result){
         System.out.println("[안내] 로그아웃되었습니다.");}
-        else{
-            System.out.println("[오류] 현재 로그인 상태가 아닙니다.");
-        }
+        UserView.getInstance().index();
     }
     } // class END
 
