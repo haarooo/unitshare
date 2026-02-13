@@ -121,29 +121,33 @@ public class ProductDao {
     // 내 구매 신청 목록 조회
     public ArrayList<ProductDto> mylist(int uno) {
         ArrayList<ProductDto> products = new ArrayList<>();
-        try {
-            String sql = "select * from product where uno = ?";
+
+        String sql = "SELECT p.* FROM product p INNER JOIN participant t ON p.pno = t.pno WHERE t.uno = ?";
+
+            try{
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, uno );
 
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                ProductDto dto = new ProductDto();
-                int pno = rs.getInt("pno");
-                String pname = rs.getString("pname");
-                int pprice = rs.getInt("pprice");
-                String pdate = rs.getString("pdate");
-                String openchat = rs.getString("openchat");
+                ProductDto productDto = new ProductDto(
+                        rs.getInt("pno"),
+                    rs.getString("pname"),
+                    rs.getInt("pprice"),
+                    rs.getString("pdate"),
+                    rs.getString("openchat")
+                );
 
-
-                ProductDto productDto = new ProductDto(pno,pname,pprice,pdate,openchat);
                 products.add(productDto);
-            } // while END
+            } // whi END
         }catch (SQLException e){
-            System.out.println("[시스템 오류] sql 문법문제 발생 + e");
+            System.out.println("[시스템 오류] sql 문법문제 발생" + e);
         }
         return products;
     } // m END
+
+
     //공동구매 신청
     public boolean groupBuying(int pno , int uno){
         try{

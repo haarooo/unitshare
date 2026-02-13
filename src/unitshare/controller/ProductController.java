@@ -51,8 +51,7 @@ public class ProductController {
         // 현재 로그인된 유저 번호를 가져온다.
         int loginNo = UserController.getInstance().getLoginSession();
 
-        ArrayList<ProductDto> result = pd.mylist(loginNo);
-        return result;
+        return pd.mylist(loginNo);
     }
 
     //공동구매 신청
