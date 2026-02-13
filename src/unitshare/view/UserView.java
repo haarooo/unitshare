@@ -1,4 +1,5 @@
 package unitshare.view;
+import unitshare.controller.ProductController;
 import unitshare.controller.UserController;
 import unitshare.model.dto.UserDto;
 
@@ -92,6 +93,7 @@ public class UserView {
         boolean result = uc.login(id,pwd);
         if (result==true) {
             System.out.println("[안내] 로그인에 성공하였습니다.");
+            ProductView.getInstance().index2();
         } else {
             System.out.println("[경고] 로그인에 실패하였습니다.");
         }
