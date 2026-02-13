@@ -12,6 +12,7 @@ import unitshare.model.dto.ProductDto;
 
 
 public class ProductDao {
+
     //싱글톤 생성
     private ProductDao(){connect();}
     private static final ProductDao instance = new ProductDao();
@@ -112,4 +113,32 @@ public class ProductDao {
         return products;
     }
 
+
+
+    // 내 구매 신청 목록 조회
+    public ArrayList<ProductDto> mylist(int uno) {
+        ArrayList<ProductDto> products = new ArrayList<>();
+        try {
+            String sql = "select * from product where uno = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, uno );
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ProductDto dto = new ProductDto();
+                int pno = rs.getInt("pno");
+                String pname = rs.getString("pname");
+                int pprice = rs.getInt("pprice");
+                String pdate = rs.getString("pdate");
+                String openchat = rs.getString("openchat");
+
+
+                ProductDto productDto = new ProductDto(pno,pname,pprice,pdate,openchat);
+                products.add(productDto);
+            } // while END
+        }catch (SQLException e){
+            System.out.println("[시스템 오류] sql 문법문제 발생 + e");
+        }
+        return products;
+    } // m END
 }

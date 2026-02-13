@@ -42,4 +42,14 @@ public class ProductController {
         boolean result = pd.BoardCancel(pno, pwd);
         return result;
     }
+
+
+    // 내 구매 신청 목록 조회(mylist)
+    public ArrayList<ProductDto> mylist(){
+        // 현재 로그인된 유저 번호를 가져온다.
+        int loginNo = UserController.getInstance().getLoginSession();
+
+        ArrayList<ProductDto> result = pd.mylist(loginNo);
+        return result;
+    }
 }

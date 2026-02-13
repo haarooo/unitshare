@@ -26,19 +26,19 @@ public class UserView {
                 System.out.println("선택>");
                 int ch = scan.nextInt();
 
-                if(uc.getLoginSession()==0){ // [로그인 전 메뉴 처리]
-                if (ch == 1) { signup(); }
-                else if (ch == 2) {login();}
-                else if (ch == 3) {}
-                else if (ch == 4) {}
-                else { // [로그인 후 메뉴 처리]
+                if(uc.getLoginSession()==0) { // [로그인 전 메뉴 처리]
+                    if (ch == 1) {signup();}
+                    else if (ch == 2) {login();}
+                    else if (ch == 3) {}
+                    else if (ch == 4) {}
+                }else { // [로그인 후 메뉴 처리]
                     if( ch == 1 ){logout();}
                     else if( ch == 2){}
                     else if ( ch == 3) {}
-                    else if ( ch == 4) {}
+                    else if ( ch == 4) {ProductView.getInstance().mylist();}
                     else if ( ch == 5) {}
                 }
-            } }catch (InputMismatchException e) {
+            }catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다.");
                 scan = new Scanner(System.in); // 입력객체 초기화
             } catch (Exception e) {
@@ -64,7 +64,6 @@ public class UserView {
 
     // 로그인 페이지 view
     public void login() {
-        Scanner scan = new Scanner(System.in);
         System.out.println("아이디 : ");
         String id = scan.next();
         System.out.println("비밀번호 : ");
@@ -77,10 +76,14 @@ public class UserView {
         }
     } // m END
 
-    // 로그아웃
+    // 로그아웃 페이지 view
     public void logout() {
-        uc.logout();
-        System.out.println("[안내] 로그아웃되었습니다.");
+        boolean result = uc.logout();
+        if(result){
+        System.out.println("[안내] 로그아웃되었습니다.");}
+        else{
+            System.out.println("[오류] 현재 로그인 상태가 아닙니다.");
+        }
     }
     } // class END
 

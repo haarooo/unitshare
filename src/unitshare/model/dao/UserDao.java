@@ -54,9 +54,8 @@ public class UserDao {
             return false;
         }
     // [1] end // 0211 수정
-    // 로그인(현재 정보와 기존 정보를 비교)
 
-    // [2] 로그인(현재 정보와 기존 정보를 비교)
+    // 로그인(현재 정보와 기존 정보를 비교)
     public int login(String id, String pwd) {
         System.out.println("UserDao.login");
         try { // SQL 작성 : 입력받은 id와 pwd가 일치하는 레코드가 있는지 확인
@@ -74,5 +73,9 @@ public class UserDao {
             System.out.println("[경고] 로그인 처리 중 에러 : " + e);
         }
         return 0;
+
     } // m END
+
+
+
 } // class END
