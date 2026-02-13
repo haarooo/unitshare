@@ -31,7 +31,7 @@ public class UserView {
                 if (ch == 1) { signup(); }
                 else if (ch == 2) {login();}
                 else if (ch == 3) { findIdView();} // 0213 수정
-                else if (ch == 4) {}
+                else if (ch == 4) { findPwdView();}
                 else { // [로그인 후 메뉴 처리]
                     if( ch == 1 ){logout();}
                     else if( ch == 2){}
@@ -58,13 +58,25 @@ public class UserView {
 
             String result = uc.findId(name, phone);
 
-            if(result != null){
-                System.out.println("찾은 아이디 : " + result);
-            } else {
-                System.out.println("일치하는 회원이 없습니다.");
-            }
+            if(result != null){System.out.println("찾은 아이디 : " + result);}
+            else {System.out.println("일치하는 회원이 없습니다.");}
         }
     // 02 end // 0213 수정
+
+    // 03. 비밀번호찾기 View
+        public void findPwdView() {
+            System.out.println("아이디 입력: ");
+            String id = scan.next();
+
+            System.out.print("전화번호 입력: ");
+            String phone = scan.next();
+
+            String result = uc.findPwd(id, phone);
+
+            if(result != null){System.out.println("찾은 비밀번호 : " + result);}
+            else {System.out.println("일치하는 회원이 없습니다.");}
+        }
+    // 03 end // 0213 수정
 
     // 04. 회원가입 View
     public void signup() {

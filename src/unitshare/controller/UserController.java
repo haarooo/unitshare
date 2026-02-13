@@ -22,6 +22,16 @@ public class UserController {
     }
     // 02 end // 0213
 
+    // 03.비밀번호찾기
+    public String findPwd(String id, String phone){
+        UserDto dto = ud.findPwd(id, phone);
+        if(dto != null){
+            return dto.getPwd();
+        }
+        return null;
+    }
+    // 03 end // 0213
+
     // 04. 회원가입 Controller
     public boolean signup( String id, String pwd, String name, String phone){
              // [*] 유효성검사 (중복검사, 데이터 길이검사)
