@@ -19,14 +19,15 @@ public class ProductView {
         for (; ; ) {
             try {
                 System.out.println("================================ Unit share for solo ================================");
-                System.out.println("1. 물품등록 2. 전체 공동구매 목록 조회 및 신청 3. 내 구매 신청목록 4. 공구참여취소 5. 물품등록취소");
+                System.out.println("1.로그아웃 2. 물품 등록 3.전체 공동구매 목록 조회 및 신청 4. 내 구매 신청 목록 조회 5.취소");
                 System.out.println("=====================================================================================");
                 System.out.println("선택>");
                 int ch = scan.nextInt();
-                if (ch == 1) {productAdd();
-                } else if (ch == 2) {findAll();
-                } else if (ch == 3) {
-                } else if (ch == 4) {test();
+                if (ch == 1) {
+                    UserView.getInstance().logout();
+                } else if (ch == 2) {productAdd();
+                } else if (ch == 3) {findAll();
+                } else if (ch == 4) {mylist();
                 } else if (ch == 5) {test2();
                 }else {System.out.println("[경고] 없는 기능 번호입니다.");}
             } catch (InputMismatchException e) {
@@ -52,7 +53,7 @@ public class ProductView {
         System.out.print("오픈채팅링크 : "); String openchat = scan.nextLine();
         boolean result = pc.productAdd(pname, pprice ,pcontent ,people ,openchat);
         if(result){
-            System.out.println("[안내]물픔등록 완료");
+            System.out.println("[안내] 물품등록 완료");
         }else{
             System.out.println("[경고] 물품등록 실패");
         }
