@@ -75,6 +75,11 @@ public class ProductView {
         }
     }
     public void test2() {
+        ArrayList<ProductDto> products = pc.findAll();
+        for(ProductDto product : products){
+            System.out.printf("번호 : %d , 제품명 : %s , 가격 : %d , 설명 : %s , 인원수 : %d , 오픈채팅링크 : %s , 등록일 : %s\n"
+                    ,product.getPno() , product.getPname(), product.getPprice(), product.getPcontent(), product.getPeople(), product.getOpenchat(), product.getPdate() );
+        }
         System.out.print("삭제하고싶은 게시물 숫자를 입력하세요.");
         int pno = scan.nextInt();
         System.out.print("비밀번호 입력:");

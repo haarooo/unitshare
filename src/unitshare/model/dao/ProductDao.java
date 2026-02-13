@@ -72,22 +72,26 @@ public class ProductDao {
 
     //내가 올린 물품 등록 취소
     public boolean BoardCancel(int pno, String pwd) {
+        findAll();
         try {
-            String sql = "DELETE p FROM product p inner JOIN user u ON p.pno = u.uno WHERE p.pno = ? AND u.pwd ='?'";
+            String sql = "delete p from product p inner join user u on p.uno=u.uno where p.pno=? and u.pwd=?";
             PreparedStatement ps = conn.prepareStatement(sql);
+            ps = conn.prepareStatement(sql);
             ps.setInt(1, pno);
-            ps.setString(2, pwd);
+            ps.setString(2,pwd);
             int count = ps.executeUpdate();
-            if (count == 1) {
-                return true;
+            if (count==1) {
+                System.out.println("삭제 성공");
             } else {
-                return false;
+                System.out.println("삭제실패");
             }
         } catch (SQLException e) {
-            System.out.println("sql 오류");
+            System.out.println("sql오류" + e);
             return false;
         }
+        return false;
     }
+
 
 
     //22. 전체 공동구매 목록조회
