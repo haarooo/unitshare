@@ -25,7 +25,7 @@ public class ProductView {
                 int ch = scan.nextInt();
                 if (ch == 1) {productAdd();
                 } else if (ch == 2) {findAll();
-                } else if (ch == 3) {
+                } else if (ch == 3) {mylist();
                 } else if (ch == 4) {test();
                 } else if (ch == 5) {test2();
                 }else {System.out.println("[경고] 없는 기능 번호입니다.");}
