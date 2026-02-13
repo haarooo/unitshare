@@ -86,4 +86,16 @@ public class ProductView {
         String pwd = scan.next();
         boolean result = pc.BoardCancel(pno,pwd);
     }
-}
+
+    // 내 구매 신청 목록 조회
+    public void mylist(){
+        ArrayList<ProductDto> products = pc.mylist();
+
+        System.out.println("========================== 내 구매 신청 목록 ==========================");
+        for(ProductDto product : products){
+            System.out.printf(" 번호 : %d , 제품명 : %s , 가격 : %d , 등록일 : %s , 오픈채팅방링크 : %s \n",
+                    product.getPno() , product.getPname() , product.getPprice() , product.getPdate() , product.getOpenchat());
+        }
+        System.out.println("====================================================================");
+    }
+} // class END

@@ -33,6 +33,13 @@ public class ProductDto {
         this.people = people;
     }
 
+    public ProductDto(int pno, String pname, int pprice, String pdate, String openchat) {
+        this.pno = pno;
+        this.pname = pname;
+        this.pprice = pprice;
+        this.pdate = pdate;
+        this.openchat = openchat;
+    }
 
     public int getPno() {return pno;}
     public void setPno(int pno) {this.pno = pno;}

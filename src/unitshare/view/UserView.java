@@ -5,6 +5,8 @@ import unitshare.model.dto.UserDto;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
+
+
 public class UserView {
     private UserView() {}
     private static final UserView instance = new UserView();
@@ -35,7 +37,7 @@ public class UserView {
                     if( ch == 1 ){logout();}
                     else if( ch == 2){}
                     else if ( ch == 3) {}
-                    else if ( ch == 4) {}
+                    else if ( ch == 4) {ProductView.getInstance().mylist();}
                     else if ( ch == 5) {}
                 }
             } }catch (InputMismatchException e) {
@@ -95,10 +97,14 @@ public class UserView {
         }
     } // m END
 
-    // 로그아웃
+    // 로그아웃 페이지 view
     public void logout() {
-        uc.logout();
-        System.out.println("[안내] 로그아웃되었습니다.");
+        boolean result = uc.logout();
+        if(result){
+        System.out.println("[안내] 로그아웃되었습니다.");}
+        else{
+            System.out.println("[오류] 현재 로그인 상태가 아닙니다.");
+        }
     }
     } // class END
 
