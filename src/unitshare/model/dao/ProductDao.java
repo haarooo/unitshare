@@ -71,12 +71,12 @@ public class ProductDao {
 
 
     //내가 올린 물품 등록 취소
-    public boolean BoardCancel(int pno, int pwd) {
+    public boolean BoardCancel(int pno, String pwd) {
         try {
-            String sql = "delete from product,user where pno=?";
+            String sql = "DELETE p FROM product p inner JOIN user u ON p.pno = u.uno WHERE p.pno = ? AND u.pwd ='?'";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, pno);
-            ps.setInt(2, pwd);
+            ps.setString(2, pwd);
             int count = ps.executeUpdate();
             if (count == 1) {
                 return true;
