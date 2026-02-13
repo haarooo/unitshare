@@ -60,6 +60,8 @@ public class ProductView {
     }//product Add e
     //테스트용/////////////////////////////////////////////////////
     Scanner scan = new Scanner(System.in);
+
+
     public void test() {
         System.out.print("숫자를 입력;");
         int pno = scan.nextInt();
