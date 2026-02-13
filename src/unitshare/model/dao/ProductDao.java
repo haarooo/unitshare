@@ -36,15 +36,16 @@ public class ProductDao {
     }
 
     //21. 물품등록
-    public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat){
+    public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat , int uno){
         try {
-            String sql = "insert into product(pname , pprice , pcontent , people , openchat)values(?,?,?,?,?)";
+            String sql = "insert into product(pname , pprice , pcontent , people , openchat , uno)values(?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, pname);
             ps.setInt(2, pprice);
             ps.setString(3, pcontent);
             ps.setInt(4, people);
             ps.setString(5, openchat);
+            ps.setInt(6 , uno);
             int count = ps.executeUpdate();
             if (count == 1) {return true;}
             else {return false;}
@@ -73,20 +74,22 @@ public class ProductDao {
     //내가 올린 물품 등록 취소
     public boolean BoardCancel(int pno, String pwd) {
         try {
-            String sql = "DELETE p FROM product p inner JOIN user u ON p.pno = u.uno WHERE p.pno = ? AND u.pwd ='?'";
+            String sql = "delete p from product p inner join user u on p.uno=u.uno where p.pno=? and u.pwd=?";
             PreparedStatement ps = conn.prepareStatement(sql);
+            ps = conn.prepareStatement(sql);
             ps.setInt(1, pno);
-            ps.setString(2, pwd);
+            ps.setString(2,pwd);
             int count = ps.executeUpdate();
-            if (count == 1) {
-                return true;
+            if (count==1) {
+                System.out.println("삭제 성공");
             } else {
-                return false;
+                System.out.println("삭제실패");
             }
         } catch (SQLException e) {
-            System.out.println("sql 오류");
+            System.out.println("sql오류" + e);
             return false;
         }
+        return false;
     }
 
 
@@ -94,7 +97,7 @@ public class ProductDao {
     public ArrayList<ProductDto> findAll(){
         ArrayList<ProductDto> products = new ArrayList<>();
         try{
-            String sql = "select * from product";
+            String sql = "SELECT *, (SELECT COUNT(*) FROM participant WHERE participant.pno = product.pno) AS cpeople FROM product";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
@@ -105,11 +108,63 @@ public class ProductDao {
                 String pdate = rs.getString("pdate");
                 String openchat = rs.getString("openchat");
                 int people = rs.getInt("people");
-                ProductDto productDto = new ProductDto(pno , pname , pprice , pcontent , pdate , openchat , people);
+                int cpeople = rs.getInt("cpeople");
+                ProductDto productDto = new ProductDto(pno , pname , pprice , pcontent , pdate , openchat , people, cpeople);
                 products.add(productDto);
             }
         }catch(SQLException e){System.out.println("sql 문법문제 2" + e);}
         return products;
     }
+
+
+
+    // 내 구매 신청 목록 조회
+    public ArrayList<ProductDto> mylist(int uno) {
+        ArrayList<ProductDto> products = new ArrayList<>();
+        try {
+            String sql = "select * from product where uno = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, uno );
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ProductDto dto = new ProductDto();
+                int pno = rs.getInt("pno");
+                String pname = rs.getString("pname");
+                int pprice = rs.getInt("pprice");
+                String pdate = rs.getString("pdate");
+                String openchat = rs.getString("openchat");
+
+
+                ProductDto productDto = new ProductDto(pno,pname,pprice,pdate,openchat);
+                products.add(productDto);
+            } // while END
+        }catch (SQLException e){
+            System.out.println("[시스템 오류] sql 문법문제 발생 + e");
+        }
+        return products;
+    } // m END
+    //공동구매 신청
+    public boolean groupBuying(int pno , int uno){
+        try{
+            String sql = "INSERT INTO participant (pno, uno, status) " +
+                         "SELECT ?, ?, 1 FROM DUAL " +
+                         "WHERE (SELECT COUNT(*) FROM participant WHERE pno = ?) < " +
+                         "(SELECT people FROM product WHERE pno = ?)";
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setInt(1, pno); // 저장할 물품번호
+                ps.setInt(2, uno); // 저장할 회원번호
+                ps.setInt(3, pno); // 현재 인원 체크용 (COUNT)
+                ps.setInt(4, pno); // 등록된 인원수 제한값 가져오기용 (people)
+
+                // 영향을 받은 행의 수가 1이면 성공, 0이면 인원 초과로 실패
+                int count = ps.executeUpdate();
+                if(count == 1){return true;}
+                else{return false;}
+
+            }catch (SQLException e) {System.out.println("sql 문법문제3" + e);}
+            return false;
+    }
+
 
 }
