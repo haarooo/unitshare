@@ -17,7 +17,6 @@ public class UserDao {
     public static UserDao getInstance() {
         return instance;
     }
-
     private ArrayList<UserDto> UserDtos = new ArrayList<>();
 
     //db연동
@@ -36,10 +35,33 @@ public class UserDao {
         }
     }
 
-    private ArrayList< UserDto > users = new ArrayList<>(); // 0211 수정
+    // 02. 아이디찾기 Dao
+    public UserDto findId( String name, String phone ){
+        String sql ="select * from user where name = ? and phone = ?";
+        try(
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, phone);
 
-    private int currentUno = 1; // 0211 수정
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+                    UserDto dto = new UserDto();
+                    dto.setUno(rs.getInt("uno"));
+                    dto.setId(rs.getString("id"));
+                    dto.setPwd(rs.getString("pwd"));
+                    dto.setPhone(rs.getString("phone"));
+                    dto.setName(rs.getString("name"));
+                    return dto;
+                }
+            }
+        }catch (Exception e){e.printStackTrace();}
+        return null;
+        }
+    // 02 end // 0213 수정
+
     // 04. 회원가입 Dao
+    private int currentUno = 1; // 0211 수정
     public boolean signup(String id, String pwd, String name, String phone ) {
        try{ String sql = "insert into user(id, pwd, name, phone) values(?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -53,7 +75,8 @@ public class UserDao {
         } catch (SQLException e) {System.out.println("[시스템오류] 회원가입 SQL 실행 중 실패 : " + e);}
             return false;
         }
-    // [1] end // 0211 수정
+    // 04 end
+
     // 로그인(현재 정보와 기존 정보를 비교)
 
     // [2] 로그인(현재 정보와 기존 정보를 비교)

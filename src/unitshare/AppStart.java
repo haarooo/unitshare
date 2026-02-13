@@ -8,12 +8,10 @@ import unitshare.view.ProductView;
 
 import unitshare.view.UserView;
 
-
 import unitshare.view.ProductView;
 
 public class AppStart {
     public static void main(String[] args) {
-
-       ProductView.getInstance().index2();
+        UserView.getInstance().index();
     }
 }
