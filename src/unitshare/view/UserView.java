@@ -1,4 +1,5 @@
 package unitshare.view;
+import unitshare.controller.ProductController;
 import unitshare.controller.UserController;
 import unitshare.model.dto.UserDto;
 
@@ -35,7 +36,7 @@ public class UserView {
                     if( ch == 1 ){logout();}
                     else if( ch == 2){}
                     else if ( ch == 3) {}
-                    else if ( ch == 4) {}
+                    else if ( ch == 4) {ProductView.getInstance().mylist();}
                     else if ( ch == 5) {}
                 }
             } }catch (InputMismatchException e) {
@@ -90,15 +91,20 @@ public class UserView {
         boolean result = uc.login(id,pwd);
         if (result==true) {
             System.out.println("[안내] 로그인에 성공하였습니다.");
+            ProductView.getInstance().index2();
         } else {
             System.out.println("[경고] 로그인에 실패하였습니다.");
         }
     } // m END
 
-    // 로그아웃
+    // 로그아웃 페이지 view
     public void logout() {
-        uc.logout();
-        System.out.println("[안내] 로그아웃되었습니다.");
+        boolean result = uc.logout();
+        if(result){
+        System.out.println("[안내] 로그아웃되었습니다.");}
+        else{
+            System.out.println("[오류] 현재 로그인 상태가 아닙니다.");
+        }
     }
     } // class END
 

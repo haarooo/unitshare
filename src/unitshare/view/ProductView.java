@@ -70,15 +70,41 @@ public class ProductView {
     public void findAll(){
         ArrayList<ProductDto> products = pc.findAll();
         for(ProductDto product : products){
-            System.out.printf("번호 : %d , 제품명 : %s , 가격 : %d , 설명 : %s , 인원수 : %d , 오픈채팅링크 : %s , 등록일 : %s"
-                    ,product.getPno() , product.getPname(), product.getPprice(), product.getPcontent(), product.getPeople(), product.getOpenchat(), product.getPdate() );
+            int cpeople =product.getPeople() - product.getCpeople();
+            if(cpeople <0 ){cpeople = 0;}
+            System.out.printf("번호 : %d , 제품명 : %s , 가격 : %d , 설명 : %s , 인원수 : %d(남은자리)/%d(총인원) , 오픈채팅링크 : %s , 등록일 : %s \n"
+                    ,product.getPno() , product.getPname(), product.getPprice(), product.getPcontent(), cpeople, product.getPeople(), product.getOpenchat(), product.getPdate() );
+        }
+        System.out.println("======================");
+        System.out.print("신청할 공동구매 목록 번호 : "); int apply = scan.nextInt();
+        if(pc.groupBuying(apply)){
+            System.out.println("[안내] 신청 성공");
+        }else{
+            System.out.println("[경고]신청실패(인원수가 다 찼습니다)");
         }
     }
     public void test2() {
+        ArrayList<ProductDto> products = pc.findAll();
+        for(ProductDto product : products){
+            System.out.printf("번호 : %d , 제품명 : %s , 가격 : %d , 설명 : %s , 인원수 : %d , 오픈채팅링크 : %s , 등록일 : %s\n"
+                    ,product.getPno() , product.getPname(), product.getPprice(), product.getPcontent(), product.getPeople(), product.getOpenchat(), product.getPdate() );
+        }
         System.out.print("삭제하고싶은 게시물 숫자를 입력하세요.");
         int pno = scan.nextInt();
         System.out.print("비밀번호 입력:");
         String pwd = scan.next();
         boolean result = pc.BoardCancel(pno,pwd);
     }
-}
+
+    // 내 구매 신청 목록 조회
+    public void mylist(){
+        ArrayList<ProductDto> products = pc.mylist();
+
+        System.out.println("========================== 내 구매 신청 목록 ==========================");
+        for(ProductDto product : products){
+            System.out.printf(" 번호 : %d , 제품명 : %s , 가격 : %d , 등록일 : %s , 오픈채팅방링크 : %s \n",
+                    product.getPno() , product.getPname() , product.getPprice() , product.getPdate() , product.getOpenchat());
+        }
+        System.out.println("====================================================================");
+    }
+} // class END
