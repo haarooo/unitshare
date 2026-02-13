@@ -10,9 +10,11 @@ public class ProductDto {
     private String openchat;
     private int people;
     private int uno;
+    private int cpeople;
+
     public ProductDto(){}
 
-    public ProductDto(int pno, String pname, int pprice, String pcontent, String pdate, String openchat, int people, int uno) {
+    public ProductDto(int pno, String pname, int pprice, String pcontent, String pdate, String openchat, int people, int uno, int cpeople) {
         this.pno = pno;
         this.pname = pname;
         this.pprice = pprice;
@@ -21,9 +23,10 @@ public class ProductDto {
         this.openchat = openchat;
         this.people = people;
         this.uno = uno;
+        this.cpeople = cpeople;
     }
 
-    public ProductDto(int pno, String pname, int pprice, String pcontent, String pdate, String openchat, int people) {
+    public ProductDto(int pno, String pname, int pprice, String pcontent, String pdate, String openchat, int people , int cpeople) {
         this.pno = pno;
         this.pname = pname;
         this.pprice = pprice;
@@ -31,8 +34,16 @@ public class ProductDto {
         this.pdate = pdate;
         this.openchat = openchat;
         this.people = people;
+        this.cpeople = cpeople;
     }
 
+    public ProductDto(int pno, String pname, int pprice, String pdate, String openchat) {
+        this.pno = pno;
+        this.pname = pname;
+        this.pprice = pprice;
+        this.pdate = pdate;
+        this.openchat = openchat;
+    }
 
     public int getPno() {return pno;}
     public void setPno(int pno) {this.pno = pno;}
@@ -50,6 +61,8 @@ public class ProductDto {
     public void setPeople(int people) {this.people = people;}
     public int getUno() {return uno;}
     public void setUno(int uno) {this.uno = uno;}
+    public int getCpeople() {return cpeople;}
+    public void setCpeople(int cpeople) {this.cpeople = cpeople;}
 
     @Override
     public String toString() {
@@ -62,6 +75,7 @@ public class ProductDto {
                 ", openchat='" + openchat + '\'' +
                 ", people=" + people +
                 ", uno=" + uno +
+                ", cpeople=" + cpeople +
                 '}';
     }
 }

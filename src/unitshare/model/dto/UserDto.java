@@ -7,6 +7,12 @@ public class UserDto {
    private String phone;
    private String name;
 
+   public UserDto(){}
+   public UserDto(String name, String phone) {
+      this.name = name;
+      this.phone = phone;
+   }// 0213 수정
+
    public UserDto(int uno, String id, String pwd, String phone, String name) {
       this.uno = uno;
       this.id = id;
@@ -14,6 +20,7 @@ public class UserDto {
       this.phone = phone;
       this.name = name;
    }
+
    public int getUno() {return uno;}
    public void setUno(int uno) {this.uno = uno;}
    public String getId() {return id;}
