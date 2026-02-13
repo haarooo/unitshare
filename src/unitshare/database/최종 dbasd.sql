@@ -33,7 +33,7 @@ CREATE TABLE participant (
 );
 select*from participant;
 
-INSERT INTO user (id, pwd, phone, name) VALUES
+INSERT INTO user (id, pw, phone, name) VALUES
 ('admin', 'pw1234', '010-1111-0000', '관리자'),
 ('buyer01', 'pass01', '010-2222-1111', '김철수'),
 ('seller01', 'sell01', '010-3333-2222', '이영희'),
@@ -72,5 +72,7 @@ INSERT INTO participant (status, pno, uno) VALUES
 
 
 select*from user;
-select*from product;
 select*from participant;
+
+-- 
+
