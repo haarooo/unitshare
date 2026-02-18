@@ -62,4 +62,10 @@ public class ProductController {
         return pd.groupBuying(pno , uno);
     }
 
+    //===
+    // 1. 포인트 입금(전송) 컨트롤러
+    public int payPoint(int pno , int uno) {
+        return pd.payPoint(pno , uno);
+    }
+
 }

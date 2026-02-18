@@ -164,6 +164,37 @@ public class ProductDao {
 
             }catch (SQLException e) {System.out.println("sql 문법문제3" + e);}
             return false;
+
+
+
+    }
+    //---
+    public int payPoint(int pno, int uno) {
+        try {
+            // 1. 이 제품의 1인당 가격이 얼마인지 가져오기
+            String sql = "SELECT pprice, people FROM product WHERE pno = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, pno);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int perPrice = rs.getInt("pprice") / rs.getInt("people");
+                String sql2 = "UPDATE user SET point = point - ? WHERE uno = ? AND point >= ?";
+                ps = conn.prepareStatement(sql2);
+                ps.setInt(1, perPrice); ps.setInt(2, uno); ps.setInt(3, perPrice);
+
+                if (ps.executeUpdate() == 1) {
+                    // 3. 차감 성공했으면 참여자 테이블의 입금 상태(is_paid)를 1로 변경
+                    String sql3 = "UPDATE participant SET is_paid = 1 WHERE pno = ? AND uno = ?";
+                    ps = conn.prepareStatement(sql3);
+                    ps.setInt(1, pno); ps.setInt(2, uno);
+                    ps.executeUpdate();
+
+                    return 1; // 입금 성공
+                } return 2; // 포인트 부족
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return 0; // 기타 오류 (이미 냈거나 등)
     }
 
 

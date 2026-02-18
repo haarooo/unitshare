@@ -6,6 +6,7 @@ public class UserDto {
    private String pwd;
    private String phone;
    private String name;
+   private int point;
 
    public UserDto(){}
    public UserDto(String name, String phone) {
@@ -13,12 +14,13 @@ public class UserDto {
       this.phone = phone;
    }// 0213 수정
 
-   public UserDto(int uno, String id, String pwd, String phone, String name) {
+   public UserDto(int uno, String id, String pwd, String phone, String name ,int point) {
       this.uno = uno;
       this.id = id;
       this.pwd = pwd;
       this.phone = phone;
       this.name = name;
+      this.point = point;
    }
 
    public int getUno() {return uno;}
@@ -31,6 +33,8 @@ public class UserDto {
    public void setPhone(String phone) {this.phone = phone;}
    public String getName() {return name;}
    public void setName(String name) {this.name = name;}
+   public int getPoint() {return point;}
+   public void setPoint(int point) {this.point = point;}
 
    @Override
    public String toString() {
@@ -40,6 +44,7 @@ public class UserDto {
               ", pwd='" + pwd + '\'' +
               ", phone='" + phone + '\'' +
               ", name='" + name + '\'' +
+              ", point=" + point +
               '}';
    }
 }
