@@ -54,6 +54,13 @@ public class ProductController {
         return pd.mylist(loginNo);
     }
 
+    // 내가 등록한 물품 목록 조회
+    public ArrayList<ProductDto> myUpList(){
+        int loginNo = UserController.getInstance().getLoginSession();
+
+        return pd.myuplist(loginNo);
+    }
+
     //공동구매 신청
     public boolean groupBuying(int pno){
         int uno = uc.getLoginSession();
