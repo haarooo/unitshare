@@ -68,7 +68,7 @@ public class ProductView {
         }
     }//product Add e
 
-    //테스트용/////////////////////////////////////////////////////
+
     Scanner scan = new Scanner(System.in);
 
     //21 전체 공동구매 목록조회
@@ -82,10 +82,19 @@ public class ProductView {
         }
         System.out.println("======================");
         System.out.print("신청할 공동구매 목록 번호(뒤로가기 0) : "); int apply = scan.nextInt();
-        if(pc.groupBuying(apply)){
-            System.out.println("[안내] 신청 성공");
-        }else if(apply == 0){index2();}
-        else{System.out.println("[경고]신청실패(인원수가 다 찼습니다)");}
+        if(apply == 0){index2();
+        }int result = pc.groupBuying(apply);
+        if(result ==1 ){
+            System.out.println("공동구매 신청 성공");
+        }else if (result == 2) {
+            System.out.println("[경고] 본인이 등록한 물품은 신청할 수 없습니다.");
+        } else if (result == 3) {
+            System.out.println("[경고] 이미 신청한 물품입니다.");
+        } else if (result == 4) {
+            System.out.println("[경고] 신청 실패: 모집 인원이 이미 가득 찼습니다.");
+        } else {
+            System.out.println("[오류] 알 수 없는 이유로 신청에 실패했습니다.");
+        }
     }
 
     //공동구매 참여취소
@@ -163,6 +172,7 @@ public class ProductView {
             } else {System.out.println("[경고] 이미 입금했거나 처리할 수 없는 상태입니다.");}
 
         }
+
     }
 
 } // class END
