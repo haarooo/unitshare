@@ -17,6 +17,11 @@ public class UserController {
         return ud.getInstance().checkId(id);
     }
 
+    // 01-2. 전화번호 중복사용 여부 controller
+    public boolean checkphoneN(String phone) {
+        return ud.getInstance().checkphoneN(phone);
+    }
+
     // 02.아이디찾기
     public String findId(String name, String phone){
         UserDto dto = ud.findId(name, phone);
