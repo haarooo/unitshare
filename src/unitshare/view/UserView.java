@@ -20,9 +20,6 @@ public class UserView {
             try {
                 System.out.println("======================== Unit share for solo ========================");
                 if(uc.getLoginSession()==0){System.out.println("1. 회원가입 2. 로그인 3. 아이디 찾기 4. 비밀번호 찾기");}
-                else{
-                    System.out.println("1.로그아웃 2. 물품 등록 3.전체 공동구매 목록 조회 및 신청 4. 내 구매 신청 목록 조회 5.취소");
-                }
                 System.out.println("=====================================================================");
                 System.out.println("선택>");
                 int ch = scan.nextInt();
@@ -32,13 +29,6 @@ public class UserView {
                 else if (ch == 2) {login();}
                 else if (ch == 3) { findIdView();} // 0213 수정
                 else if (ch == 4) { findPwdView();}
-                else { // [로그인 후 메뉴 처리]
-                    if( ch == 1 ){logout();}
-                    else if( ch == 2){}
-                    else if ( ch == 3) {}
-                    else if ( ch == 4) {ProductView.getInstance().mylist();}
-                    else if ( ch == 5) {}
-                }
             } }catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다.");
                 scan = new Scanner(System.in); // 입력객체 초기화

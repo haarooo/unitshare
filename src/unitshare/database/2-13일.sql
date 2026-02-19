@@ -75,6 +75,7 @@ select*from user;
 use unishare;
 select*from product;
 alter table product change plink openchat LONGTEXT;
+delete p from product p inner join user u on p.uno=u.uno where p.pno=1 and u.pwd='pw1234';
 select*from participant;
 select*from user;
 

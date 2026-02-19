@@ -104,7 +104,6 @@ public class UserDao {
 
     // [2] 로그인(현재 정보와 기존 정보를 비교)
     public int login(String id, String pwd) {
-        System.out.println("UserDao.login");
         try { // SQL 작성 : 입력받은 id와 pwd가 일치하는 레코드가 있는지 확인
             String sql = "select * from user where id = ? AND pwd = ?";
             PreparedStatement ps = conn.prepareStatement(sql);

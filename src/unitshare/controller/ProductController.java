@@ -28,8 +28,8 @@ public class ProductController {
     }
 
     //공동구매 취소
-    public boolean  GroupCancel(int pno) {
-        boolean result = pd.GroupCancel(pno);
+    public boolean  GroupCancel(int pno,String pwd) {
+        boolean result = pd.GroupCancel(pno,pwd);
         if (result) {
             System.out.println("공동구매가 정상적으로 취소되었습니다.");
         } else {

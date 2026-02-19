@@ -53,11 +53,12 @@ public class ProductDao {
         return false;
     }
     //공동구매 참여취소:
-    public boolean GroupCancel(int pno) {
+    public boolean GroupCancel(int pno,String pwd) {
         try {
-            String sql = "delete from participant where pno=?";
+            String sql = "delete p from participant p inner join user u on p.uno=u.uno where p.pno=? and u.pwd=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, pno);
+            ps.setString(2,pwd);
             int count = ps.executeUpdate();
             if (count == 1) {
                 return true;
