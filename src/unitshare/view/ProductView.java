@@ -16,7 +16,7 @@ public class ProductView {
 
     //로그인 이후 페이지
     public void index2() {
-        for (; ; ) {
+        for (; ;) {
             try {
                 System.out.println("================================ Unit share for solo ================================");
                 System.out.println("1.로그아웃 2. 물품 등록 3.전체 공동구매 목록 조회 및 신청 4. 내 구매 신청 목록 조회 5.내가 등록한 물품 목록 조회 6.내가 등록한 물품 글 삭제" +
@@ -28,9 +28,9 @@ public class ProductView {
                 else if (ch == 2) {productAdd();}
                 else if (ch == 3) {findAll();}
                 else if (ch == 4) {mylist();}
-                else if (ch == 5) {myUpList();}
+                else if (ch == 5) { myUpList();}
                 else if(ch==6){BoardCancel();}
-                else if(ch==7){GroupCancel();}
+                else if (ch == 7) {GroupCancel();}
                 else {System.out.println("[경고] 없는 기능 번호입니다.");}
             } catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다.");
@@ -61,7 +61,7 @@ public class ProductView {
         }
     }//product Add e
 
-    //테스트용/////////////////////////////////////////////////////
+
     Scanner scan = new Scanner(System.in);
 
     //21 전체 공동구매 목록조회
@@ -75,10 +75,19 @@ public class ProductView {
         }
         System.out.println("======================");
         System.out.print("신청할 공동구매 목록 번호(뒤로가기 0) : "); int apply = scan.nextInt();
-        if(pc.groupBuying(apply)){
-            System.out.println("[안내] 신청 성공");
-        }else if(apply == 0){index2();}
-        else{System.out.println("[경고]신청실패(인원수가 다 찼습니다)");}
+        if(apply == 0){index2();
+        }int result = pc.groupBuying(apply);
+        if(result ==1 ){
+            System.out.println("공동구매 신청 성공");
+        }else if (result == 2) {
+            System.out.println("[경고] 본인이 등록한 물품은 신청할 수 없습니다.");
+        } else if (result == 3) {
+            System.out.println("[경고] 이미 신청한 물품입니다.");
+        } else if (result == 4) {
+            System.out.println("[경고] 신청 실패: 모집 인원이 이미 가득 찼습니다.");
+        } else {
+            System.out.println("[오류] 알 수 없는 이유로 신청에 실패했습니다.");
+        }
     }
 
     //공동구매 참여취소

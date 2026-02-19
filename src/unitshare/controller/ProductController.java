@@ -62,9 +62,8 @@ public class ProductController {
     }
 
     //공동구매 신청
-    public boolean groupBuying(int pno){
+    public int groupBuying(int pno){
         int uno = uc.getLoginSession();
-        if(uno == 0) return false;
         return pd.groupBuying(pno , uno);
     }
 

@@ -179,27 +179,53 @@ public class ProductDao {
 
 
     //공동구매 신청
-    public boolean groupBuying(int pno , int uno){
+    public int groupBuying(int pno , int uno){
         try{
-            String sql = "INSERT INTO participant (pno, uno, status) " +
-                         "SELECT ?, ?, 1 FROM DUAL " +
-                         "WHERE (SELECT COUNT(*) FROM participant WHERE pno = ?) < " +
-                         "(SELECT people FROM product WHERE pno = ?)";
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ps.setInt(1, pno); // 저장할 물품번호
-                ps.setInt(2, uno); // 저장할 회원번호
-                ps.setInt(3, pno); // 현재 인원 체크용 (COUNT)
-                ps.setInt(4, pno); // 등록된 인원수 제한값 가져오기용 (people)
 
-                // 영향을 받은 행의 수가 1이면 성공, 0이면 인원 초과로 실패
-                int count = ps.executeUpdate();
-                if(count == 1){return true;}
-                else{return false;}
+            //등록자와 신청자가 같을시 2반환
+            String sql = "select uno,people from product where pno = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1 , pno);
+            ResultSet rs = ps.executeQuery();
+            int addUno = -1 ;
+            int maxPeople = 0;
+            if(rs.next()){
+                addUno = rs.getInt("uno");
+                maxPeople = rs.getInt("people");
+            }if(addUno == uno)return 2;
 
-            }catch (SQLException e) {System.out.println("sql 문법문제3" + e);}
-            return false;
+            //현재 신청 인원이 최대인원보다 크거나 같으면 4반환
+            String sql2 = "select count(*) from participant where pno = ?";
+            PreparedStatement ps2 = conn.prepareStatement(sql2);
+            ps2.setInt(1, pno);
+            ResultSet rs2 = ps2.executeQuery();
+            if(rs2.next()){
+                int npeople = rs2.getInt(1);
+                if(npeople == maxPeople) return 4;
+            }
+            //내가 이미 신청한 게시물이면 3반환
+            String sql3 = "select count(*) from  participant where pno = ? and uno = ?";
+            PreparedStatement ps3 = conn.prepareStatement(sql3);
+            ps3.setInt(1 , pno);
+            ps3.setInt(2 , uno);
+            ResultSet rs3 = ps3.executeQuery();
+            if(rs3.next()){
+                int myApply = rs3.getInt(1);
+                if(myApply > 0)return 3;
+            }
 
+            String sql4 = "insert into participant(pno , uno , status)values (?,?,1)";
+            PreparedStatement ps4 = conn.prepareStatement(sql4);
+            ps4.setInt(1 ,pno);
+            ps4.setInt(2 , uno);
+            if(ps4.executeUpdate() ==1)return 1;
+
+        }catch (Exception e){System.out.println("sql오류");}
+        return 0;
     }
+
+
+
     //포인트 입금 함수
     public int payPoint(int pno, int uno) {
         try {
