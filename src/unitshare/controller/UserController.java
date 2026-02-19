@@ -43,11 +43,10 @@ public class UserController {
     // 로그인 메소드
     private int loginSession = 0; // 세션:일정한 저장소 구역
     public boolean login(String id , String pwd){
-        System.out.println("UserController.login");
-        System.out.println("id = " + id + ", pwd = " + pwd);
         int result = ud.login(id,pwd);
         if(result>0){
-            loginSession = result; return true;
+            loginSession = result;
+            return true;
         }
         return false;
     }
