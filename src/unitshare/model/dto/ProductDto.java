@@ -11,10 +11,11 @@ public class ProductDto {
     private int people;
     private int uno;
     private int cpeople;
+    private int pstatus;
 
     public ProductDto(){}
 
-    public ProductDto(int pno, String pname, int pprice, String pcontent, String pdate, String openchat, int people, int uno, int cpeople) {
+    public ProductDto(int pno, String pname, int pprice, String pcontent, String pdate, String openchat, int people, int uno, int cpeople , int pstatus) {
         this.pno = pno;
         this.pname = pname;
         this.pprice = pprice;
@@ -24,6 +25,7 @@ public class ProductDto {
         this.people = people;
         this.uno = uno;
         this.cpeople = cpeople;
+        this.pstatus = pstatus;
     }
 
     public ProductDto(int pno, String pname, int pprice, String pcontent, String pdate, String openchat, int people , int cpeople) {
@@ -63,6 +65,8 @@ public class ProductDto {
     public void setUno(int uno) {this.uno = uno;}
     public int getCpeople() {return cpeople;}
     public void setCpeople(int cpeople) {this.cpeople = cpeople;}
+    public int getPstatus() {return pstatus;}
+    public void setPstatus(int pstatus) {this.pstatus = pstatus;}
 
     @Override
     public String toString() {
@@ -76,6 +80,7 @@ public class ProductDto {
                 ", people=" + people +
                 ", uno=" + uno +
                 ", cpeople=" + cpeople +
+                ", pstatus=" + pstatus +
                 '}';
     }
 }

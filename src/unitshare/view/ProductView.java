@@ -61,8 +61,6 @@ public class ProductView {
     }//product Add e
     //테스트용/////////////////////////////////////////////////////
     Scanner scan = new Scanner(System.in);
-
-
     public void test() {
         System.out.print("숫자를 입력;");
         int pno = scan.nextInt();
@@ -80,12 +78,11 @@ public class ProductView {
                     ,product.getPno() , product.getPname(), product.getPprice(), product.getPcontent(), cpeople, product.getPeople(), product.getOpenchat(), product.getPdate() );
         }
         System.out.println("======================");
-        System.out.print("신청할 공동구매 목록 번호 : "); int apply = scan.nextInt();
+        System.out.print("신청할 공동구매 목록 번호(뒤로가기 0) : "); int apply = scan.nextInt();
         if(pc.groupBuying(apply)){
             System.out.println("[안내] 신청 성공");
-        }else{
-            System.out.println("[경고]신청실패(인원수가 다 찼습니다)");
-        }
+        }if(apply == 0){index2();}
+        else{System.out.println("[경고]신청실패(인원수가 다 찼습니다)");}
     }
     public void GroupCancel() {
         ArrayList<ProductDto> products = pc.findAll();
@@ -111,4 +108,24 @@ public class ProductView {
         }
         System.out.println("====================================================================");
     }
+
+
+    //------------------------------------
+    public void productDetail(int pno , int  uno){
+
+        System.out.println("1. 입금 | 2. 거래완료 | 0. 되돌아가기");
+        System.out.print("선택 > "); int ch = scan.nextInt();
+
+        if (ch == 0) { return; }
+        if (ch == 1) {
+            int result = pc.payPoint(pno , uno); // 컨트롤러에서 포인트 차감 + DB 업데이트 수행
+            if(result == 1) {
+                System.out.println("[안내] 입금 성공! 상태가 갱신되었습니다.");
+            } else if(result == 2) {System.out.println("[경고] 잔액 부족");
+            } else {System.out.println("[경고] 이미 입금했거나 처리할 수 없는 상태입니다.");}
+
+        }
+
+    }
+
 } // class END
