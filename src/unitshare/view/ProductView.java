@@ -28,11 +28,9 @@ public class ProductView {
                 else if (ch == 2) {productAdd();}
                 else if (ch == 3) {findAll();}
                 else if (ch == 4) {mylist();}
-                else if (ch == 5) {BoardCancel();}
-                else if(ch==6){GroupCancel();}
                 else if (ch == 5) {myUpList();}
-                else if (ch == 6) {GroupCancel();}
-                else if(ch==7){}
+                else if(ch==6){BoardCancel();}
+                else if(ch==7){GroupCancel();}
                 else {System.out.println("[경고] 없는 기능 번호입니다.");}
             } catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다.");
@@ -103,7 +101,20 @@ public class ProductView {
 
     //내가 올린 게시물 삭제
     public void BoardCancel() {
+        ArrayList<ProductDto> products = pc.myUpList();
 
+        System.out.println("========================== 내가 등록한 물품 목록 ==========================");
+        for(ProductDto product : products){
+            System.out.printf(" 번호 : %d , 제품명 : %s , 가격 : %d , 등록일 : %s , 오픈채팅방링크 : %s \n",
+                    product.getPno() , product.getPname() , product.getPprice() , product.getPdate() , product.getOpenchat());
+        }
+        System.out.println("====================================================================");
+
+        System.out.println("삭제할 게시물 번호를 입력해주세요.");
+        int pno = scan.nextInt();
+        System.out.print("비밀번호 입력:");
+        String pwd = scan.next();
+        boolean result = pc.BoardCancel(pno,pwd);
     }
 
     // 내 구매 신청 목록 조회
