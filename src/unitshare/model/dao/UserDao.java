@@ -35,6 +35,11 @@ public class UserDao {
         }
     }
 
+
+
+
+    // 01 end
+
     // 02. 아이디찾기 Dao
     public UserDto findId( String name, String phone ){
         String sql ="select * from user where name = ? and phone = ?";
@@ -42,9 +47,7 @@ public class UserDao {
             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
             ps.setString(2, phone);
-
             try (ResultSet rs = ps.executeQuery()) {
-
                 if (rs.next()) {
                     UserDto dto = new UserDto();
                     dto.setUno(rs.getInt("uno"));
@@ -99,6 +102,17 @@ public class UserDao {
             return false;
         }
     // 04 end
+    // 01. 아이디 중복 사용 여부 dao             //  0219 수정
+    public boolean checkId(String id){
+        String sql = "select * from user where id = ?";
+        try{
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return true;
+        } catch (Exception e) { e.printStackTrace(); }
+        return false;
+    }// 01 end
 
     // 로그인(현재 정보와 기존 정보를 비교)
 

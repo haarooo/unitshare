@@ -18,10 +18,15 @@ public class UserView {
     public void index() {
         for (; ; ) {
             try {
-                System.out.println("======================== Unit share for solo ========================");
-                if(uc.getLoginSession()==0){System.out.println("1. 회원가입 2. 로그인 3. 아이디 찾기 4. 비밀번호 찾기");}
-                System.out.println("=====================================================================");
-                System.out.println("선택>");
+                System.out.println("\n┌────────────────────────────────────────────────────┐");
+                System.out.println("│             📢 UNIT SHARE FOR SOLO                │");
+                System.out.println("├────────────────────────────────────────────────────┤");
+                if (uc.getLoginSession() == 0) {
+                    System.out.println("│  👤 1. 회원가입          🔑 2. 로그인             │");
+                    System.out.println("│  🔍 3. 아이디 찾기       🔒 4. 비밀번호 찾기      │");
+                }
+                System.out.println("└────────────────────────────────────────────────────┘");
+                System.out.print("✨ 선택 > ");
                 int ch = scan.nextInt();
 
                 if(uc.getLoginSession()==0){ // [로그인 전 메뉴 처리]
@@ -39,72 +44,98 @@ public class UserView {
     }
 
     // 02. 아이디찾기 View
-        public void findIdView() {
-            System.out.print("이름 입력: ");
-            String name = scan.next();
+    public void findIdView() {
+        System.out.println("----- 아이디 찾기 -----");
+        System.out.print("이름 입력: ");
+        String name = scan.next();
 
-            System.out.print("전화번호 입력: ");
-            String phone = scan.next();
+        System.out.print("전화번호 입력: ");
+        String phone = scan.next();
 
-            String result = uc.findId(name, phone);
+        String result = uc.findId(name, phone);
 
-            if(result != null){System.out.println("찾은 아이디 : " + result);}
-            else {System.out.println("일치하는 회원이 없습니다.");}
+        if (result != null) {
+            System.out.println("찾은 아이디 : " + result);
+        } else {
+            System.out.println("일치하는 회원이 없습니다.");
         }
+    }
     // 02 end // 0213 수정
 
     // 03. 비밀번호찾기 View
+
         public void findPwdView() {
-            System.out.println("아이디 입력: ");
-            String id = scan.next();
+        System.out.println("----- 비밀번호 찾기 -----");
+        System.out.println("아이디 입력: ");
+        String id = scan.next();
 
-            System.out.print("전화번호 입력: ");
-            String phone = scan.next();
+        System.out.print("전화번호 입력: ");
+        String phone = scan.next();
 
-            String result = uc.findPwd(id, phone);
+        String result = uc.findPwd(id, phone);
 
-            if(result != null){System.out.println("찾은 비밀번호 : " + result);}
-            else {System.out.println("일치하는 회원이 없습니다.");}
+        if (result != null) {
+            System.out.println("찾은 비밀번호 : " + result);
+        } else {
+            System.out.println("일치하는 회원이 없습니다.");
         }
+    }
     // 03 end // 0213 수정
 
     // 04. 회원가입 View
     public void signup() {
-        System.out.print("아이디 : ");
-        String id = scan.next();
-        System.out.print("비밀번호 : ");
-        String pwd = scan.next();
-        System.out.print("성함 : ");
-        String name = scan.next();
-        System.out.print("연락처 : ");
-        String phone = scan.next();
-        boolean result = uc.signup(id, pwd, name, phone);
-        if (result == true) {System.out.println("[안내] 회원가입이 완료되었습니다.");}
-        else {System.out.println("[안내] 회원가입에 실패하였습니다.");}
+        // 아이디 중복확인 // 0219 임도경 수정
+        String id = "";
+        while (true) {
+            System.out.println("----- 회원가입 -----"); // 0219 수정
+            System.out.print("아이디 : ");
+            id= scan.next();
+            if (uc.checkId(id)) {
+                System.out.println("[오류] 이미 존재하는 아이디입니다. 다시 입력해주세요.");
+            } else {
+                System.out.println("[안내] 사용 가능한 아이디입니다.");
+                break;
+            }
+        }
+            System.out.print("비밀번호 : ");
+            String pwd = scan.next();
+            System.out.print("성함 : ");
+            String name = scan.next();
+            System.out.print("연락처 : ");
+            String phone = scan.next();
+            boolean result = uc.signup(id, pwd, name, phone);
+            if (result) {
+                System.out.println("[안내] 회원가입이 완료되었습니다.");
+            } else {
+                System.out.println("[안내] 회원가입에 실패하였습니다. 다시 시도해주십시오.");
+            }
     } //04 end
 
-    // 로그인 페이지 view
-    public void login() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("아이디 : ");
-        String id = scan.next();
-        System.out.println("비밀번호 : ");
-        String pwd = scan.next();
-        boolean result = uc.login(id,pwd);
-        if (result==true) {
-            System.out.println("[안내] 로그인에 성공하였습니다.");
-            ProductView.getInstance().index2();
-        } else {
-            System.out.println("[경고] 로그인에 실패하였습니다.");
-        }
-    } // m END
+        // 로그인 페이지 view
+        public void login () {
+            System.out.println("----- 로그인 -----");
+            Scanner scan = new Scanner(System.in);
+            System.out.print("아이디 : ");
+            String id = scan.next();
+            System.out.print("비밀번호 : ");
+            String pwd = scan.next();
+            boolean result = uc.login(id, pwd);
+            if (result == true) {
+                System.out.println("[안내] 로그인에 성공하였습니다.");
+                ProductView.getInstance().index2();
+            } else {
+                System.out.println("[경고] 로그인에 실패하였습니다.");
+            }
+        } // m END
 
-    // 로그아웃 페이지 view
-    public void logout() {
-        boolean result = uc.logout();
-        if(result){
-        System.out.println("[안내] 로그아웃되었습니다.");}
-        UserView.getInstance().index();
-    }
+        // 로그아웃 페이지 view
+        public void logout () {
+            boolean result = uc.logout();
+            if (result) {
+                System.out.println("[안내] 로그아웃되었습니다.");
+            }
+            UserView.getInstance().index();
+        }
     } // class END
+
 

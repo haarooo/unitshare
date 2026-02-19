@@ -12,6 +12,11 @@ public class UserController {
     private UserDao ud = UserDao.getInstance();
 
 
+    // 01. 아이디 중복사용 여부 controller
+    public boolean checkId(String id){
+        return ud.getInstance().checkId(id);
+    }
+
     // 02.아이디찾기
     public String findId(String name, String phone){
         UserDto dto = ud.findId(name, phone);
