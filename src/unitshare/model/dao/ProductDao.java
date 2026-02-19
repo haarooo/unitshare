@@ -52,6 +52,7 @@ public class ProductDao {
         }catch (SQLException e){System.out.println("[시스템오류] SQL 문법 문제발행" + e);}
         return false;
     }
+
     //공동구매 참여취소:
     public boolean GroupCancel(int pno,String pwd) {
         try {
@@ -148,6 +149,34 @@ public class ProductDao {
         return products;
     } // m END
 
+    // 내가 등록한 물품 목록 조회
+    public ArrayList<ProductDto> myuplist(int uno){
+        ArrayList<ProductDto> products = new ArrayList<>();
+        String sql ="SELECT * FROM product WHERE uno = ? ";
+
+        try{
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, uno );
+
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ProductDto productDto = new ProductDto(
+                        rs.getInt("pno"),
+                        rs.getString("pname"),
+                        rs.getInt("pprice"),
+                        rs.getString("pdate"),
+                        rs.getString("openchat")
+                );
+
+                products.add(productDto);
+            } // whi END
+        }catch (SQLException e){
+            System.out.println("[시스템 오류] sql 문법문제 발생" + e);
+        }
+        return products;
+    } // m END
+
 
     //공동구매 신청
     public boolean groupBuying(int pno , int uno){
@@ -169,8 +198,6 @@ public class ProductDao {
 
             }catch (SQLException e) {System.out.println("sql 문법문제3" + e);}
             return false;
-
-
 
     }
     //포인트 입금 함수
