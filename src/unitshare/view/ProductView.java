@@ -19,8 +19,8 @@ public class ProductView {
         for (; ; ) {
             try {
                 System.out.println("================================ Unit share for solo ================================");
-                System.out.println("1.로그아웃 2. 물품 등록 3.전체 공동구매 목록 조회 및 신청 4. 내 구매 신청 목록 조회 5.내가 등록한 물품 글 삭제" +
-                        "6.참여한 공동구매 취소");
+                System.out.println("1.로그아웃 2. 물품 등록 3.전체 공동구매 목록 조회 및 신청 4. 내 구매 신청 목록 조회 5.내가 등록한 물품 목록 조회 6.내가 등록한 물품 글 삭제" +
+                        "7.참여한 공동구매 취소");
                 System.out.println("=====================================================================================");
                 System.out.println("선택>");
                 int ch = scan.nextInt();
@@ -28,8 +28,9 @@ public class ProductView {
                 else if (ch == 2) {productAdd();}
                 else if (ch == 3) {findAll();}
                 else if (ch == 4) {mylist();}
-                else if (ch == 5) {GroupCancel();}
-                else if(ch==6){}
+                else if (ch == 5) {myUpList();}
+                else if (ch == 6) {GroupCancel();}
+                else if(ch==7){}
                 else {System.out.println("[경고] 없는 기능 번호입니다.");}
             } catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다.");
@@ -109,6 +110,17 @@ public class ProductView {
         System.out.println("====================================================================");
     }
 
+    // 내가 등록한 물품 목록 조회
+    public void myUpList(){
+        ArrayList<ProductDto> products = pc.myUpList();
+
+        System.out.println("========================== 내가 등록한 물품 목록 ==========================");
+        for(ProductDto product : products){
+            System.out.printf(" 번호 : %d , 제품명 : %s , 가격 : %d , 등록일 : %s , 오픈채팅방링크 : %s \n",
+                    product.getPno() , product.getPname() , product.getPprice() , product.getPdate() , product.getOpenchat());
+        }
+        System.out.println("====================================================================");
+    }
 
     //------------------------------------
     public void productDetail(int pno , int  uno){
