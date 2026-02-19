@@ -16,7 +16,7 @@ CREATE TABLE product (
                          pprice INT NOT NULL,                         -- 가격
                          pcontent VARCHAR(30) NOT NULL,               -- 설명
                          pdate DATETIME DEFAULT NOW(),                -- 등록일
-                         openchat VARCHAR(100),                          -- 오픈채팅링크 (추가)
+                         plink VARCHAR(100),                          -- 오픈채팅링크 (추가)
                          people INT(10) NOT NULL,                     -- 인원수
                          uno INT,                                     -- 회원번호 (FK)
                          CONSTRAINT fk_user_uno FOREIGN KEY (uno) REFERENCES user(uno)
@@ -45,7 +45,7 @@ INSERT INTO user (id, pwd, phone, name) VALUES
                                            ('star', 'star00', '010-9999-8888', '서태웅'),
                                            ('coffee', 'latte5', '010-1010-9999', '권준호');
 
-INSERT INTO product (pname, pprice, pcontent, pdate, openchat, people, uno) VALUES
+INSERT INTO product (pname, pprice, pcontent, pdate, plink, people, uno) VALUES
                                                                              ('청소기', 5000, '거의 새상품', '2026-02-09', 'https://open.kakao.com/o/s1', 1, 1),
                                                                              ('후드티', 5500, '거의 새상품', '2026-02-10', 'https://open.kakao.com/o/s2', 2, 2),
                                                                              ('샤넬 가방', 6000, '거의 새상품', '2026-02-11', 'https://open.kakao.com/o/s3', 3, 3),
@@ -70,10 +70,11 @@ INSERT INTO participant (status, pno, uno) VALUES
                                                (1, 7, 9), -- 9번 회원이 7번 물품 참여 승인
                                                (0, 8, 10); -- 10번 회원이 8번 물품 참여 대기
 
-
+df
 select*from user;
 use unishare;
 select*from product;
+alter table product change plink openchat LONGTEXT;
 select*from participant;
 select*from user;
 
