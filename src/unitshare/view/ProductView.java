@@ -18,11 +18,18 @@ public class ProductView {
     public void index2() {
         for (; ; ) {
             try {
-                System.out.println("================================ Unit share for solo ================================");
-                System.out.println("1.로그아웃 2. 물품 등록 3.전체 공동구매 목록 조회 및 신청 4. 내 구매 신청 목록 조회 5.내가 등록한 물품 목록 조회 6.내가 등록한 물품 글 삭제" +
-                        "7.참여한 공동구매 취소");
-                System.out.println("=====================================================================================");
-                System.out.println("선택>");
+                System.out.println("\n[ UNIT SHARE FOR SOLO ]");
+                System.out.println("--------------------------------------------------");
+                System.out.print(" 1.로그아웃 🏠   ");
+                System.out.print(" 2.물품등록 📦   ");
+                System.out.println(" 3.구매신청 🛒");
+
+                System.out.print(" 4.공구신청목록 📜   ");
+                System.out.print(" 5.내가등록한물품 📋   ");
+                System.out.println(" 6.내가올린글삭제 ❌");
+                System.out.println(" 7.구매취소 🚫");
+                System.out.println("--------------------------------------------------");
+                System.out.print("선택 > ");
                 int ch = scan.nextInt();
                 if (ch == 1) {UserView.getInstance().logout();}
                 else if (ch == 2) {productAdd();}
@@ -91,7 +98,7 @@ public class ProductView {
                     product.getPno() , product.getPname() , product.getPprice() , product.getPdate() , product.getOpenchat());
         }
         System.out.println("====================================================================");
-        System.out.print("삭제하고싶은 게시물 숫자를 입력하세요.");
+        System.out.print("취소하고싶은 게시물 번호를 입력하세요.");
         int pno = scan.nextInt();
         System.out.print("비밀번호 입력:");
         String pwd = scan.next();

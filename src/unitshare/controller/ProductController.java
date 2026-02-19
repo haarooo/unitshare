@@ -11,6 +11,9 @@ public class ProductController {
     private static final ProductController instance = new ProductController();
     public static ProductController getInstance(){return instance;}
 
+
+
+
     private ProductDao pd = ProductDao.getInstance();
     private UserController uc = UserController.getInstance();
 
@@ -21,11 +24,14 @@ public class ProductController {
         boolean result = pd.productAdd(pname, pprice, pcontent, people, openchat , uno);
         return result;
     }
+
+
     //21. 전체 공동구매 목록조회
     public ArrayList<ProductDto> findAll(){
         ArrayList<ProductDto> result = pd.findAll();
         return result;
     }
+
 
     //공동구매 취소
     public boolean  GroupCancel(int pno,String pwd) {
@@ -33,7 +39,7 @@ public class ProductController {
         if (result) {
             System.out.println("공동구매가 정상적으로 취소되었습니다.");
         } else {
-            System.out.println("취소"); //인원이 다차서 취소할수없습니다로 바꿀예정
+            System.out.println("취소");
         }
         return result;
     }
