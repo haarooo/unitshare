@@ -172,7 +172,7 @@ public class ProductDao {
 
 
     }
-    //---
+    //포인트 입금 함수
     public int payPoint(int pno, int uno) {
         try {
             // 1. 이 제품의 1인당 가격이 얼마인지 가져오기
