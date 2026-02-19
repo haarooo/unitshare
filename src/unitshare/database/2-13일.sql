@@ -74,7 +74,6 @@ INSERT INTO participant (status, pno, uno) VALUES
 select*from user;
 use unishare;
 select*from product;
-alter table product change plink openchat LONGTEXT;
 select*from participant;
 select*from user;
 
