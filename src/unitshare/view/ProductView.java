@@ -163,7 +163,6 @@ public class ProductView {
             } else {System.out.println("[경고] 이미 입금했거나 처리할 수 없는 상태입니다.");}
 
         }
-
     }
 
 } // class END
