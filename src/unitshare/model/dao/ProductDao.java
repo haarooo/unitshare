@@ -52,6 +52,7 @@ public class ProductDao {
         }catch (SQLException e){System.out.println("[시스템오류] SQL 문법 문제발행" + e);}
         return false;
     }
+
     //공동구매 참여취소:
     public boolean GroupCancel(int pno,String pwd) {
         try {
@@ -197,8 +198,6 @@ public class ProductDao {
 
             }catch (SQLException e) {System.out.println("sql 문법문제3" + e);}
             return false;
-
-
 
     }
     //포인트 입금 함수
