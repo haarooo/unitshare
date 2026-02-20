@@ -123,7 +123,7 @@ public class UserView {
             System.out.print("비밀번호 : ");
             String pwd = scan.next();
             boolean result = uc.login(id, pwd);
-            if (result == true) {
+            if (result) {
                 System.out.println("[안내] 로그인에 성공하였습니다.");
                 ProductView.getInstance().index2();
             } else {
@@ -140,5 +140,6 @@ public class UserView {
             UserView.getInstance().index();
         }
     } // class END
+
 
 
