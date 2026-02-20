@@ -1,5 +1,6 @@
 package unitshare.model.dao;
 
+import unitshare.controller.ProductController;
 import unitshare.model.dto.ProductDto;
 
 import java.sql.*;
@@ -38,6 +39,7 @@ public class ProductDao {
     //21. 물품등록
     public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat , int uno){
         try {
+
             String sql = "insert into product(pname , pprice , pcontent , people , openchat , uno)values(?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, pname);
@@ -47,11 +49,34 @@ public class ProductDao {
             ps.setString(5, openchat);
             ps.setInt(6 , uno);
             int count = ps.executeUpdate();
-            if (count == 1) {return true;}
-            else {return false;}
+            if(count ==1){
+
+                String sql2 = "select * from product orderBy pno desc limit 0";
+                ps = conn.prepareStatement( sql2 );
+                ResultSet rs = ps.executeQuery();
+                if( rs.next() ){
+                    return rs.getInt( "pno" );
+                }
+            }
+            else{return false;}
+
+
+
+
         }catch (SQLException e){System.out.println("[시스템오류] SQL 문법 문제발행" + e);}
         return false;
     }
+
+    /*String sql4 = "insert into participant(pno , uno , status)values (?,?,1)";
+            PreparedStatement ps1 = conn.prepareStatement(sql4);
+            ps1.setInt(1, pno);
+            ps1.setInt(2, uno);
+            int count1 = ps1.executeUpdate();
+            if(count1 == 1 && count ==1){return true;}
+            else{return false;}*/
+
+
+
 
     //공동구매 참여취소:
     public boolean GroupCancel(int pno,String pwd) {
@@ -113,6 +138,7 @@ public class ProductDao {
                 int cpeople = rs.getInt("cpeople");
                 ProductDto productDto = new ProductDto(pno , pname , pprice , pcontent , pdate , openchat , people, cpeople);
                 products.add(productDto);
+
             }
         }catch(SQLException e){System.out.println("sql 문법문제 2" + e);}
         return products;
@@ -177,6 +203,17 @@ public class ProductDao {
         return products;
     } // m END
 
+    //등록자 참여자 신청
+    public int myGroupBuying(int pno , int uno){
+        try{
+            String sql4 = "insert into participant(pno , uno , status)values (?,?,1)";
+            PreparedStatement ps4 = conn.prepareStatement(sql4);
+            ps4.setInt(1 ,pno);
+            ps4.setInt(2 , uno);
+            if(ps4.executeUpdate() ==1)return 1;
+        }catch (Exception e){System.out.println("sql오류");}
+        return 0;
+    }
 
     //공동구매 신청
     public int groupBuying(int pno , int uno){

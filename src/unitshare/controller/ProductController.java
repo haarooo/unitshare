@@ -3,6 +3,7 @@ package unitshare.controller;
 import unitshare.model.dao.ProductDao;
 import unitshare.model.dto.ProductDto;
 
+import java.lang.classfile.Attribute;
 import java.util.ArrayList;
 
 public class ProductController {
@@ -22,8 +23,13 @@ public class ProductController {
     public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat){
         int uno = uc.getLoginSession();
         boolean result = pd.productAdd(pname, pprice, pcontent, people, openchat , uno);
+        if( result == true ){
+            boolean result1 = pd.myGroupBuying( pno , uno  );
+
+        }
         return result;
     }
+
 
 
     //21. 전체 공동구매 목록조회

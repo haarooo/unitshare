@@ -97,6 +97,7 @@ public class ProductView {
         }
     }
 
+
     //공동구매 참여취소
     public void GroupCancel() {
         ArrayList<ProductDto> products = pc.mylist();
@@ -156,6 +157,8 @@ public class ProductView {
         }
         System.out.println("====================================================================");
     }
+
+
 
     public void productDetail(int pno , int  uno){
 
