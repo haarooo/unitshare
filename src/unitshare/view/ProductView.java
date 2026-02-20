@@ -26,9 +26,9 @@ public class ProductView {
                 System.out.print(" 2.물품등록 📦   ");
                 System.out.println(" 3.구매신청 🛒");
 
-                System.out.print(" 4.공구신청목록 📜   ");
-                System.out.print(" 5.내가등록한물품 📋   ");
-                System.out.println(" 6.내가올린글삭제 ❌");
+                System.out.print(" 4.공구신청목록 📜 ");
+                System.out.print("5.내가등록한물품 📋 ");
+                System.out.println("6.내가올린글삭제 ❌");
                 System.out.println(" 7.구매취소 🚫");
                 System.out.println("8. 상태변경");
                 System.out.println("--------------------------------------------------");
