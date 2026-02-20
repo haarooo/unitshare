@@ -135,4 +135,21 @@ public class UserDao {
         return 0;
 
     } // m END
+
+    // 비밀번호 변경
+    public int newPwd(UserDto userDto, String newPwd){
+        try {
+            String sql = "UPDATE user SET pwd = ? WHERE uno = ? AND pwd =?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1,newPwd);
+            ps.setInt(2,userDto.getUno());
+            ps.setString(3,userDto.getPwd());
+
+            int result = ps.executeUpdate();
+
+        }catch (Exception e){
+            System.out.println("[경고] 비밀번호 변경 도중 에러 발생 : " + e);
+        }
+        return 0;
+    }
 } // class END
