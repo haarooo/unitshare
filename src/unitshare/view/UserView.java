@@ -7,9 +7,14 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 
 public class UserView {
-    private UserView() {}
+    private UserView() {
+    }
+
     private static final UserView instance = new UserView();
-    public static UserView getInstance() {return instance;}
+
+    public static UserView getInstance() {
+        return instance;
+    }
 
     private UserController uc = UserController.getInstance();
     Scanner scan = new Scanner(System.in); // 스캐너 멤버변수로 빼면 더 편리함.
@@ -29,12 +34,18 @@ public class UserView {
                 System.out.print("✨ 선택 > ");
                 int ch = scan.nextInt();
 
-                if(uc.getLoginSession()==0){ // [로그인 전 메뉴 처리]
-                if (ch == 1) { signup(); }
-                else if (ch == 2) {login();}
-                else if (ch == 3) { findIdView();} // 0213 수정
-                else if (ch == 4) { findPwdView();}
-            } }catch (InputMismatchException e) {
+                if (uc.getLoginSession() == 0) { // [로그인 전 메뉴 처리]
+                    if (ch == 1) {
+                        signup();
+                    } else if (ch == 2) {
+                    } else if (ch == 3) {
+                        findIdView();
+                    } // 0213 수정
+                    else if (ch == 4) {
+                        findPwdView();
+                    }
+                }
+            } catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다.");
                 scan = new Scanner(System.in); // 입력객체 초기화
             } catch (Exception e) {
@@ -64,7 +75,7 @@ public class UserView {
 
     // 03. 비밀번호찾기 View
 
-        public void findPwdView() {
+    public void findPwdView() {
         System.out.println("----- 비밀번호 찾기 -----");
         System.out.println("아이디 입력: ");
         String id = scan.next();
@@ -84,35 +95,46 @@ public class UserView {
 
     // 04. 회원가입 View
     public void signup() {
-        // 아이디 중복확인
+        // 01-1. 아이디 중복확인
         String id = "";
         while (true) {
             System.out.println("----- 회원가입 -----"); // 0219 수정
             System.out.print("아이디 : ");
-            id= scan.next();
+            id = scan.next();
             if (uc.checkId(id)) {
                 System.out.println("[오류] 이미 존재하는 아이디입니다. 다시 입력해주세요.");
             } else {
                 System.out.println("[안내] 사용 가능한 아이디입니다.");
                 break;
             }
-        }
-            System.out.print("비밀번호 : ");
-            String pwd = scan.next();
-            System.out.print("성함 : ");
-            String name = scan.next();
-        // 전화번호 중복 확인
-        String phone =""; // 0219 수정
-            System.out.print("연락처 : ");
-            while(true){
+        } // 01-1 end
+        System.out.print("비밀번호 : ");
+        String pwd = scan.next();
 
+        System.out.print("성함 : ");
+        String name = scan.next();
+
+         // 01-2. 전화번호 중복 확인
+        String phone = ""; // 0219 수정
+        while (true) {
+            System.out.print("연락처 : ");
+            phone = scan.next();
+            if (uc.checkphone(phone)) {
+                System.out.println("[오류] 이미 등록된 전화번호 입니다. 다시 입력해주세요.");
+            } else {
+                System.out.println("[안내] 등록 가능한 전화번호 입니다.");
+                break;
+            }// 01-2 end
+        } // while end
+
+        // 모든 입력이 정상일 때 회원가입 실행
             boolean result = uc.signup(id, pwd, name, phone);
             if (result) {
                 System.out.println("[안내] 회원가입이 완료되었습니다.");
             } else {
                 System.out.println("[안내] 회원가입에 실패하였습니다. 다시 시도해주십시오.");
             }
-    } //04 end
+        } //04 end
 
         // 로그인 페이지 view
         public void login () {
@@ -129,17 +151,17 @@ public class UserView {
             } else {
                 System.out.println("[경고] 로그인에 실패하였습니다.");
             }
-        } // m END
 
-        // 로그아웃 페이지 view
-        public void logout () {
-            boolean result = uc.logout();
-            if (result) {
-                System.out.println("[안내] 로그아웃되었습니다.");
-            }
-            UserView.getInstance().index();
+        } // m END
+    // 로그아웃 페이지 view
+    public void logout() {
+        boolean result = uc.logout();
+        if (result) {
+            System.out.println("[안내] 로그아웃되었습니다.");
         }
-    } // class END
+        UserView.getInstance().index();
+    }
+}// class END
 
 
 
