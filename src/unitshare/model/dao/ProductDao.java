@@ -37,7 +37,7 @@ public class ProductDao {
     }
 
     //21. 물품등록
-    public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat , int uno){
+    public int productAdd(String pname , int pprice , String pcontent , int people , String openchat , int uno){
         try {
 
             String sql = "insert into product(pname , pprice , pcontent , people , openchat , uno)values(?,?,?,?,?,?)";
@@ -51,30 +51,17 @@ public class ProductDao {
             int count = ps.executeUpdate();
             if(count ==1){
 
-                String sql2 = "select * from product orderBy pno desc limit 0";
-                ps = conn.prepareStatement( sql2 );
-                ResultSet rs = ps.executeQuery();
+                String sql2 = "select * from product order By pno desc limit 1";
+                PreparedStatement ps1 = conn.prepareStatement( sql2 );
+                ResultSet rs = ps1.executeQuery();
                 if( rs.next() ){
                     return rs.getInt( "pno" );
                 }
             }
-            else{return false;}
-
-
-
-
+            else{return 0;}
         }catch (SQLException e){System.out.println("[시스템오류] SQL 문법 문제발행" + e);}
-        return false;
+        return 0;
     }
-
-    /*String sql4 = "insert into participant(pno , uno , status)values (?,?,1)";
-            PreparedStatement ps1 = conn.prepareStatement(sql4);
-            ps1.setInt(1, pno);
-            ps1.setInt(2, uno);
-            int count1 = ps1.executeUpdate();
-            if(count1 == 1 && count ==1){return true;}
-            else{return false;}*/
-
 
 
 

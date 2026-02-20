@@ -60,8 +60,8 @@ public class ProductView {
         if(people > 5){System.out.println("최대 4명까지 가능합니다");return;}
         scan.nextLine();
         System.out.print("오픈채팅링크 : "); String openchat = scan.nextLine();
-        boolean result = pc.productAdd(pname, pprice ,pcontent ,people ,openchat);
-        if(result){
+        int result = pc.productAdd(pname, pprice ,pcontent ,people ,openchat);
+        if(result == 1){
             System.out.println("[안내] 물품등록 완료");
         }else{
             System.out.println("[경고] 물품등록 실패");

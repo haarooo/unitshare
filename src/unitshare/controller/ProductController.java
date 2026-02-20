@@ -20,14 +20,13 @@ public class ProductController {
 
 
     //20. 물품등록
-    public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat){
+    public int productAdd(String pname , int pprice , String pcontent , int people , String openchat){
         int uno = uc.getLoginSession();
-        boolean result = pd.productAdd(pname, pprice, pcontent, people, openchat , uno);
-        if( result == true ){
-            boolean result1 = pd.myGroupBuying( pno , uno  );
+        int result = pd.productAdd(pname, pprice, pcontent, people, openchat , uno);
 
-        }
-        return result;
+        int result2 =pd.myGroupBuying(result , uno);
+
+        return result2;
     }
 
 
