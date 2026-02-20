@@ -2,6 +2,7 @@ package unitshare.controller;
 
 import unitshare.model.dao.ProductDao;
 import unitshare.model.dto.ProductDto;
+import unitshare.view.UserView;
 
 import java.lang.classfile.Attribute;
 import java.util.ArrayList;
@@ -77,11 +78,18 @@ public class ProductController {
         int uno = uc.getLoginSession();
         return pd.groupBuying(pno , uno);
     }
-
+    //거래시작
+    public int tradeStart(int pno , int uno){
+        return pd.tradeStart(pno , uno);
+    }
 
     // 1. 포인트 입금(전송) 컨트롤러
     public int payPoint(int pno , int uno) {
         return pd.payPoint(pno , uno);
+    }
+    //거려완료 상태
+    public int complete(int pno , int uno){
+        return pd.complete(pno , uno);
     }
 
 }
