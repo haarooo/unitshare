@@ -102,7 +102,7 @@ public class UserDao {
             return false;
         }
     // 04 end
-    // 01. 아이디 중복 사용 여부 dao             //  0219 수정
+    // 01-1. 아이디 중복 사용 여부 dao             //  0219 수정
     public boolean checkId(String id){
         String sql = "select * from user where id = ?";
         try{
@@ -112,7 +112,19 @@ public class UserDao {
             if (rs.next()) return true;
         } catch (Exception e) { e.printStackTrace(); }
         return false;
-    }// 01 end
+    }// 01-1 end
+
+    // 01-2. 전화번호 중복 사용 여부 dao
+    public boolean checkPhone(String phone) {
+        String sql = "select * from user where phone = ?";
+        try{
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, phone);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return true;
+        } catch (Exception e) { e.printStackTrace(); }
+        return false;
+    }    // 01-2 end
 
     // 로그인(현재 정보와 기존 정보를 비교)
 

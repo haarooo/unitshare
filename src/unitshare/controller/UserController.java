@@ -18,8 +18,8 @@ public class UserController {
     }
 
     // 01-2. 전화번호 중복사용 여부 controller
-    public boolean checkphoneN(String phone) {
-        return ud.getInstance().checkphoneN(phone);
+    public boolean checkphone(String phone) {
+        return ud.getInstance().checkPhone(phone);
     }
 
     // 02.아이디찾기
