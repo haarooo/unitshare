@@ -84,7 +84,7 @@ public class UserView {
 
     // 04. 회원가입 View
     public void signup() {
-        // 아이디 중복확인 // 0219 임도경 수정
+        // 아이디 중복확인
         String id = "";
         while (true) {
             System.out.println("----- 회원가입 -----"); // 0219 수정
@@ -96,13 +96,27 @@ public class UserView {
                 System.out.println("[안내] 사용 가능한 아이디입니다.");
                 break;
             }
-        }
-            System.out.print("비밀번호 : ");
-            String pwd = scan.next();
-            System.out.print("성함 : ");
-            String name = scan.next();
+        } // 01-1 end
+        System.out.print("비밀번호 : ");
+        String pwd = scan.next();
+
+        System.out.print("성함 : ");
+        String name = scan.next();
+
+         // 01-2. 전화번호 중복 확인
+        String phone = ""; // 0219 수정
+        while (true) {
             System.out.print("연락처 : ");
-            String phone = scan.next();
+            phone = scan.next();
+            if (uc.checkphone(phone)) {
+                System.out.println("[오류] 이미 등록된 전화번호 입니다. 다시 입력해주세요.");
+            } else {
+                System.out.println("[안내] 등록 가능한 전화번호 입니다.");
+                break;
+            }// 01-2 end
+        } // while end
+
+        // 모든 입력이 정상일 때 회원가입 실행
             boolean result = uc.signup(id, pwd, name, phone);
             if (result) {
                 System.out.println("[안내] 회원가입이 완료되었습니다.");
