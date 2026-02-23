@@ -306,7 +306,7 @@ public class ProductDao {
         return 0;
     }
 
-
+    //거래 준비
     public int tradeStart(int pno, int uno) {
         try {
             // 내 현재 상태 확인
@@ -348,7 +348,7 @@ public class ProductDao {
         return 0; // 에러
     }
 
-
+    //입금함수
     public int payPoint(int pno, int uno) {
         try {
             // 현재 상태 확인 (중복 입금 및 완료된 거래 방지)
