@@ -4,7 +4,6 @@ import unitshare.model.dao.ProductDao;
 import unitshare.model.dto.ProductDto;
 import unitshare.view.UserView;
 
-import java.lang.classfile.Attribute;
 import java.util.ArrayList;
 
 public class ProductController {
@@ -33,7 +32,7 @@ public class ProductController {
 
 
     //21. 전체 공동구매 목록조회
-    public ArrayList<ProductDto> findAll(){
+    public ArrayList<ProductDto> findAll(int page){
         ArrayList<ProductDto> result = pd.findAll();
         return result;
     }
