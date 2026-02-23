@@ -86,7 +86,6 @@ public class UserController {
         this.ud = ud;
     }
 
-
     // 비밀번호 변경 페이지
     public boolean newPwd(String currentPwd, String newPwd){
         if (loginSession==0) {
@@ -102,6 +101,6 @@ public class UserController {
         boolean result = userDao.newPwd(this.loginSession,currentPwd,newPwd);
         return result;
     } // m END
-
 }
+
 

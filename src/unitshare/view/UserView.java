@@ -12,10 +12,7 @@ public class UserView {
     UserController userController = UserController.getInstance();
 
     private static final UserView instance = new UserView();
-
-    public static UserView getInstance() {
-        return instance;
-    }
+    public static UserView getInstance() {return instance;}
 
     private UserController uc = UserController.getInstance();
     Scanner scan = new Scanner(System.in); // 스캐너 멤버변수로 빼면 더 편리함.
@@ -77,7 +74,7 @@ public class UserView {
 
     // 03. 비밀번호찾기 View
 
-    public void findPwdView() {
+        public void findPwdView() {
         System.out.println("----- 비밀번호 찾기 -----");
         System.out.println("아이디 입력: ");
         String id = scan.next();
@@ -97,12 +94,12 @@ public class UserView {
 
     // 04. 회원가입 View
     public void signup() {
-        // 아이디 중복확인 // 0219 임도경 수정
+        // 아이디 중복확인
         String id = "";
         while (true) {
             System.out.println("----- 회원가입 -----"); // 0219 수정
             System.out.print("아이디 : ");
-            id = scan.next();
+            id= scan.next();
             if (uc.checkId(id)) {
                 System.out.println("[오류] 이미 존재하는 아이디입니다. 다시 입력해주세요.");
             } else {
@@ -116,7 +113,7 @@ public class UserView {
         System.out.print("성함 : ");
         String name = scan.next();
 
-        // 01-2. 전화번호 중복 확인
+         // 01-2. 전화번호 중복 확인
         String phone = ""; // 0219 수정
         while (true) {
             System.out.print("연락처 : ");
@@ -188,5 +185,6 @@ public class UserView {
             }
     }
     } // class END
+
 
 
