@@ -29,8 +29,8 @@ public class ProductView {
                 System.out.print(" 4.공구신청목록 📜 ");
                 System.out.print("5.내가등록한물품 📋 ");
                 System.out.println("6.내가올린글삭제 ❌");
-                System.out.println(" 7.구매취소 🚫");
-                System.out.println("8. 상태변경");
+                System.out.print(" 7.구매취소 🚫");
+                System.out.println("  8. 거래현황 ");
                 System.out.println("--------------------------------------------------");
                 System.out.print("선택 > ");
                 int ch = scan.nextInt();
@@ -164,36 +164,54 @@ public class ProductView {
 
 
 
-    public void productDetail(){
-        System.out.println("상태 변경할 물품 번호");
+    public void productDetail() {
+        mylist();
+        System.out.print("상태 변경할 물품 번호 입력 : ");
         int pno = scan.nextInt();
-        System.out.println("1. 거래동의 | 2. 입금 | 3. 거래완료 | 0. 뒤로가기");
-        System.out.print("선택 > ");
+        System.out.println("----------------------- [ 거래 관리 ] -----------------------");
+        System.out.println(" 1. 거래준비(동의) ✅ | 2. 포인트 입금 💰 | 3. 거래완료 🏁 | 0. 뒤로가기");
+        System.out.print(" 선택 > ");
         int ch = scan.nextInt();
-        if (ch == 0) {return;}
 
-        else if(ch==1){
-            int uno = uc.getLoginSession();
-            int result = pc.tradeStart(pno , uno);
-            if(result ==1){
-                System.out.println("[안내] 거래 동의");
-            }else{System.out.println("거래시작 불가");}
+        if (ch == 0) return;
+        int uno = uc.getLoginSession();
+
+        // 1. 거래준비
+        if (ch == 1) {
+            int result = pc.tradeStart(pno, uno);
+            if (result == 1) {System.out.println("[안내] 준비완료! 모든 참여자가 준비되면 입금이 가능합니다.");
+            } else if (result == 3) {System.out.println("[경고] 이미 준비완료 되었습니다.");
+            } else if (result == 2) {System.out.println("[오류] 신청하지 않은 글이거나 해당 물품 정보가 없습니다.");
+            } else {System.out.println("[오류] 시스템 장애가 발생했습니다.");}
         }
-        else if(ch == 2) {
-            int uno = uc.getLoginSession();
-            int result= pc.payPoint(pno ,uno);
-            if(result == 1) {
-                System.out.println("[안내] 입금 성공! 상태가 갱신되었습니다.");
-            } else if(result == 2) {System.out.println("[경고] 잔액 부족");
-            } else {System.out.println("[경고] 이미 입금했거나 처리할 수 없는 상태입니다.");}
-        }else if(ch==3) {
-            int uno = uc.getLoginSession();
-            int reult = pc.complete(pno, uno);
-            if (reult == 1) {
-                System.out.println("[안내] 거래 완료!");
-            } else {
-                System.out.println("[안내] 불가");
+        //입금
+        else if (ch == 2) {
+            int result = pc.payPoint(pno, uno);
+            switch (result) {
+                case 1: System.out.println("[안내] 입금 성공"); break;
+                case 2: System.out.println("[경고] 잔액이 부족합니다. 포인트를 충전해주세요."); break;
+                case 4: System.out.println("[경고] 아직 모집 인원이 다 차지 않았습니다."); break;
+                case 5: System.out.println("[경고] 모든 인원이 준비완료 상태가 아닙니다"); break;
+                case 6: System.out.println("[안내] 등록자는 본인 글에 입금할 수 없습니다."); break;
+                case 7: System.out.println("[경고] 이미 입금이 완료된 상태입니다."); break;
+                case 8: System.out.println("[경고] 이미 종료된 거래입니다. "); break;
+                case 9: System.out.println("[경고] 먼저 거래준비 버튼을 눌러주세요"); break;
+                default: System.out.println("[오류] 입금 처리 중 알 수 없는 에러 발생."); break;
             }
         }
+        //거래완료
+        else if (ch == 3) {
+            int result = pc.complete(pno, uno);
+            switch (result) {
+                case 1:
+                    System.out.println("[안내] 거래 완료");
+                    break;
+                case 2: System.out.println("[경고] 신청한 글에만 상태 변경이 가능합니다"); break;
+                case 3: System.out.println("[경고] 입금을 먼저 완료해야 거래완료가 가능합니다."); break;
+                case 4: System.out.println("[안내] 이미 최종 거래 완료 처리가 된 상품입니다."); break;
+                case 5: System.out.println("[안내] 아직 모든 인원이 입금완료 상태가 아닙니다");
+                default: System.out.println("[오류] 완료 처리 중 장애가 발생했습니다."); break;
+            }
         }
+    }
     }// class END

@@ -81,12 +81,11 @@ public class ProductController {
     public int tradeStart(int pno , int uno){
         return pd.tradeStart(pno , uno);
     }
-
     // 1. 포인트 입금(전송) 컨트롤러
     public int payPoint(int pno , int uno) {
         return pd.payPoint(pno , uno);
     }
-    //거려완료 상태
+    //거래완료 상태
     public int complete(int pno , int uno){
         return pd.complete(pno , uno);
     }

@@ -37,11 +37,11 @@ public class UserView {
                 if (uc.getLoginSession() == 0) { // [로그인 전 메뉴 처리]
                     if (ch == 1) {
                         signup();
-                    } else if (ch == 2) {
-                    } else if (ch == 3) {
+                    } else if (ch == 2) {login();
+                    } else if (ch == 3) {findIdView();
                         findIdView();
                     } // 0213 수정
-                    else if (ch == 4) {
+                    else if (ch == 4) {findPwdView();
                         findPwdView();
                     }
                 }

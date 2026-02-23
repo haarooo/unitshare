@@ -39,6 +39,7 @@ public class ProductDao {
     //21. 물품등록
     public int productAdd(String pname , int pprice , String pcontent , int people , String openchat , int uno){
         try {
+
             String sql = "insert into product(pname , pprice , pcontent , people , openchat , uno)values(?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, pname);
@@ -61,6 +62,8 @@ public class ProductDao {
         }catch (SQLException e){System.out.println("[시스템오류] SQL 문법 문제발행" + e);}
         return 0;
     }
+
+
 
     //공동구매 참여취소:
     public boolean GroupCancel(int pno,String pwd) {
@@ -105,7 +108,7 @@ public class ProductDao {
 
 
     //22. 전체 공동구매 목록조회
-    public ArrayList<ProductDto> findAll(int page){
+    public ArrayList<ProductDto> findAll(){
         ////페이징처리
         int limit=5; //제한
         int begin=13;
@@ -125,6 +128,7 @@ public class ProductDao {
                 int cpeople = rs.getInt("cpeople");
                 ProductDto productDto = new ProductDto(pno , pname , pprice , pcontent , pdate , openchat , people, cpeople);
                 products.add(productDto);
+
             }
         }catch(SQLException e){System.out.println("sql 문법문제 2" + e);}
         return products;
@@ -180,7 +184,6 @@ public class ProductDao {
                         rs.getString("pdate"),
                         rs.getString("openchat")
                 );
-
                 products.add(productDto);
             } // whi END
         }catch (SQLException e){
@@ -248,64 +251,216 @@ public class ProductDao {
     }
 
 
-    //거래 시작 상태 변경
-    public int tradeStart(int pno , int uno){
-        try{
-            String sql = "UPDATE participant SET status = 1 WHERE pno = ? AND uno = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, pno);
-            ps.setInt(2, uno);
-            int result = ps.executeUpdate();
-            if(result ==1 ){return 1;}
-            else{return 0;}
-        }catch (SQLException e){
-            System.out.println("sql오류 거래시작");
-        }return 0;
+    public int tradeStart(int pno, int uno) {
+        try {
+            // 내 현재 상태 확인
+            String sql1 = "select status from participant where pno = ? and uno = ?";
+            PreparedStatement ps1 = conn.prepareStatement(sql1);
+            ps1.setInt(1, pno);
+            ps1.setInt(2, uno);
+            ResultSet rs1 = ps1.executeQuery();
+
+            if (rs1.next()) {
+                int currentStatus = rs1.getInt("status");
+
+                // 중복준비 방지
+                if (currentStatus >= 1) {
+                    System.out.println("[안내] 이미 준비완료 되었거나 진행 중인 거래입니다.");
+                    return 3; // 이미 처리됨 코드
+                }
+            } else {
+                // 참여 명단에 없는 사람이 접근한 경우
+                return 2;
+            }
+
+            // 준비완료로 변경
+            String sql2 = "update participant set status = 1 where pno = ? and uno = ?";
+            PreparedStatement ps2 = conn.prepareStatement(sql2);
+            ps2.setInt(1, pno);
+            ps2.setInt(2, uno);
+
+            int result = ps2.executeUpdate();
+
+            if (result == 1) {
+                return 1; // 준비완료
+            } else {
+                return 2; // 업데이트 실패
+            }
+        } catch (Exception e) {
+            System.out.println("거래준비오류: "+ e);
+        }
+        return 0; // 에러
     }
 
 
-
-    //포인트 입금 함수
     public int payPoint(int pno, int uno) {
         try {
-            // 1. 이 제품의 1인당 가격이 얼마인지 가져오기
-            String sql = "SELECT pprice, people FROM product WHERE pno = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, pno);
-            ResultSet rs = ps.executeQuery();
+            // 현재 상태 확인 (중복 입금 및 완료된 거래 방지)
+            String sql0 = "select status from participant where pno = ? and uno = ?";
+            PreparedStatement ps0 = conn.prepareStatement(sql0);
+            ps0.setInt(1, pno); ps0.setInt(2, uno);
+            ResultSet rs0 = ps0.executeQuery();
 
-            if (rs.next()) {
-                int perPrice = rs.getInt("pprice") / rs.getInt("people");
-                String sql2 = "UPDATE user SET point = point - ? WHERE uno = ? AND point >= ? and status = 1";
-                ps = conn.prepareStatement(sql2);
-                ps.setInt(1, perPrice); ps.setInt(2, uno); ps.setInt(3, perPrice);
-
-                if (ps.executeUpdate() == 1) {
-                    String sql3 = "UPDATE participant SET status = 2 WHERE pno = ? AND uno = ?";
-                    ps = conn.prepareStatement(sql3);
-                    ps.setInt(1, pno); ps.setInt(2, uno);
-                    ps.executeUpdate();
-                    return 1;
-
-                } else{return 0;}
+            if (rs0.next()) {
+                int currentStatus = rs0.getInt("status");
+                if (currentStatus == 3) return 8; // 이미 거래 완료됨
+                if (currentStatus == 2) return 7; // 이미 입금 완료됨
+                if (currentStatus == 0) return 9; // 아직 준비완료를 안 누름
+            } else {
+                return 2; // 신청안한사람
             }
-        } catch (Exception e) {System.out.println("입금 sql");}
-        return 0;
+
+            // 등록자인지 확인
+            String sql1 = "select uno, people, pprice from product where pno = ?";
+            PreparedStatement ps1 = conn.prepareStatement(sql1);
+            ps1.setInt(1, pno);
+            ResultSet rs1 = ps1.executeQuery();
+
+            int ownerUno = -1; int totalPeople = 0; int pprice = 0;
+            if (rs1.next()) {
+                ownerUno = rs1.getInt("uno");
+                totalPeople = rs1.getInt("people");
+                pprice = rs1.getInt("pprice");
+            }
+            if (ownerUno == uno) return 6; // 주최자는 입금 대상이 아님
+
+            // 인원수가 다 찼는지 확인
+            String sql3 = "select count(*) from participant where pno = ?";
+            PreparedStatement ps3 = conn.prepareStatement(sql3);
+            ps3.setInt(1, pno);
+            ResultSet rs3 = ps3.executeQuery();
+            if (rs3.next()) {
+                if (rs3.getInt(1) < totalPeople) return 4; // 인원 미달
+            }
+
+            // 모든 인원이 준비완료인지 확인
+            String sql4 = "select count(*) from participant where pno = ? and status >= 1";
+            PreparedStatement ps4 = conn.prepareStatement(sql4);
+            ps4.setInt(1, pno);
+            ResultSet rs4 = ps4.executeQuery();
+            if (rs4.next()) {
+                if (rs4.getInt(1) < totalPeople) return 5; // 준비 안 된 인원 있음
+            }
+
+            // 포인트 차감
+            int perPrice = pprice / totalPeople; // 1인당 가격 계산
+            String sql5 = "update user set point = point - ? where uno = ? and point >= ?";
+            PreparedStatement ps5 = conn.prepareStatement(sql5);
+            ps5.setInt(1, perPrice);
+            ps5.setInt(2, uno);
+            ps5.setInt(3, perPrice);
+
+            if (ps5.executeUpdate() == 1) {
+                // 참여 상태를 변경
+                String sql6 = "update participant SET status = 2 WHERE pno = ? AND uno = ?";
+                PreparedStatement ps6 = conn.prepareStatement(sql6);
+                ps6.setInt(1, pno);
+                ps6.setInt(2, uno);
+                ps6.executeUpdate();
+                return 1; // 입금 및 상태 변경 성공
+            } else {
+                return 2; // 잔액 부족 (또는 유저 정보 없음)
+            }
+
+        } catch (Exception e) {
+            System.out.println("입금 로직 오류: " + e.getMessage());
+        }
+        return 0; // 시스템 에러
     }
 
-    //거래 완료
-    public int complete(int pno , int uno){
-        try{
-            String sql = "UPDATE participant SET status = 3 WHERE pno = ? AND uno = ? AND status = 2";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, pno);
-            ps.setInt(2, uno);
-            int result = ps.executeUpdate();
-            if(result ==1){return 1;}
-            else{return 0;}
-        }catch (SQLException e){
-            System.out.println("sql 거래상태 이상");
-        }return 0;
+    //거래완료
+    public int complete(int pno, int uno) {
+        try {
+            // 등록자 ,총 인원과 가격은 얼마인지 가져오기
+            String sql1 = "SELECT uno, pprice, people from product WHERE pno = ?";
+            PreparedStatement ps1 = conn.prepareStatement(sql1);
+            ps1.setInt(1, pno);
+            ResultSet rs1 = ps1.executeQuery();
+            int hostUno = -1; int pprice = 0; int totalPeople = 0;
+            if (rs1.next()) {
+                hostUno = rs1.getInt("uno");
+                pprice = rs1.getInt("pprice");
+                totalPeople = rs1.getInt("people");
+            }
+            boolean isOwner = (hostUno == uno);
+
+
+            //전원 입금 완료 상태 여부 확인
+            String sql_check = "select count(*) from participant where pno = ? and status < 2";
+            PreparedStatement ps_check = conn.prepareStatement(sql_check);
+            ps_check.setInt(1, pno);
+            ResultSet rs_check = ps_check.executeQuery();
+
+            if (rs_check.next()) {
+                int notPaidCount = rs_check.getInt(1);
+                if (notPaidCount > 1) {
+                    return 5; // 전원 입금 미완료
+                }
+            }
+
+
+
+            // 내 참여 상태 확인
+            String sql2 = "SELECT status from participant WHERE pno = ? AND uno = ?";
+            PreparedStatement ps2 = conn.prepareStatement(sql2);
+            ps2.setInt(1, pno); ps2.setInt(2, uno);
+            ResultSet rs2 = ps2.executeQuery();
+
+            if (rs2.next()) {
+                int currentStatus = rs2.getInt("status");
+                if (currentStatus == 3) return 4; // 이미 완료된 상태
+                // 등록자가 아닌데 입금(2)도 안 한 상태에서 완료를 누르면 거부
+                if (!isOwner && currentStatus < 2) return 3;
+            } else {
+                return 2; // 명단에 없음
+            }
+
+
+
+
+
+
+            // 상태를 거래완료로 변경
+            String sql3 = "UPDATE participant SET status = 3 WHERE pno = ? AND uno = ?";
+            PreparedStatement ps3 = conn.prepareStatement(sql3);
+            ps3.setInt(1, pno); ps3.setInt(2, uno);
+
+            int result = ps3.executeUpdate();
+
+            if (result == 1) {
+                //모든 사람이 완료 상태인지 카운트
+                String sql4 = "SELECT count(*) from participant WHERE pno = ? AND status = 3";
+                PreparedStatement ps4 = conn.prepareStatement(sql4);
+                ps4.setInt(1, pno);
+                ResultSet rs4 = ps4.executeQuery();
+
+                if (rs4.next()) {
+                    int completeCount = rs4.getInt(1);
+
+                    // 모든 인원이 완료를 눌렀다면 최종 정산 실행
+                    if (completeCount == totalPeople) {
+                        int perPrice = pprice / totalPeople;
+                        int finalAmount = pprice - perPrice;
+                        // 주최자에게 보관 중이던 제품 총액(pprice) 입금
+                        String sql5 = "update user SET point = point + ? WHERE uno = ?";
+                        PreparedStatement ps5 = conn.prepareStatement(sql5);
+                        ps5.setInt(1, finalAmount);
+                        ps5.setInt(2, hostUno);
+
+                        if (ps5.executeUpdate() == 1) {
+                            System.out.println("전원 거래 완료 주최자에게 정산되었습니다.");
+                        }
+                    }
+                }
+                return 1; // 내 상태 변경 성공 정산 여부와 관계없이 본인 처리는 끝
+            } else {
+                return 2; // 업데이트 실패 쿼리는 돌았으나 영향받은 행 없음
+            }
+
+        } catch (Exception e) {
+            System.out.println("거래완료 및 정산 오류: " + e.getMessage());
+        }
+        return 0; // 시스템/SQL 오류
     }
 
     public class Page {
