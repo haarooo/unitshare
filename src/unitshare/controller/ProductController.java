@@ -32,7 +32,7 @@ public class ProductController {
 
 
     //21. 전체 공동구매 목록조회
-    public ArrayList<ProductDto> findAll(){
+    public ArrayList<ProductDto> findAll(int page){
         ArrayList<ProductDto> result = pd.findAll();
         return result;
     }
