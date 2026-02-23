@@ -31,6 +31,7 @@ public class ProductView {
                 System.out.println("6.내가올린글삭제 ❌");
                 System.out.println(" 7.구매취소 🚫");
                 System.out.println("8. 상태변경");
+                System.out.println("9. 비밀번호 변경");
                 System.out.println("--------------------------------------------------");
                 System.out.print("선택 > ");
                 int ch = scan.nextInt();
@@ -42,6 +43,7 @@ public class ProductView {
                 else if(ch==6){BoardCancel();}
                 else if(ch==7){GroupCancel();}
                 else if(ch==8){productDetail();}
+                else if(ch==9){UserView.getInstance().newPwd();}
                 else {System.out.println("[경고] 없는 기능 번호입니다.");}
             } catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다.");
