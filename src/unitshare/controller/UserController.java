@@ -2,6 +2,8 @@ package unitshare.controller;
 import unitshare.model.dto.UserDto;
 import unitshare.model.dao.UserDao;
 
+import java.util.Scanner;
+
 public static class UserController {
     // 싱글톤 생성
     private UserController() {}
