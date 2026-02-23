@@ -181,14 +181,13 @@ public class UserDao {
             PreparedStatement ps = conn.prepareStatement(sql1);
             ps.setInt(1, uno);
             if (ps.executeUpdate() == 1) {
-                String sql2 = "insert into loginStatement(userState, uno) values (1, ?)";
+                String sql2 = "insert into loginStatement(loginState, uno) values (1, ?)";
                 PreparedStatement ps2 = conn.prepareStatement(sql2);
                 ps2.setInt(1, uno);
                 ps2.executeUpdate();
                 return true;
             }
-        }catch (SQLException e){System.out.println("[경고] 휴면계정 처리 중 데이터베이스 통신 실패 " + e);}
+        }catch (SQLException e){System.out.print("[경고] 휴면계정 처리 중 에러" + e);}
         return false;
-    }
-    // 휴면 end
+    } // 휴면 end
 } // class END
