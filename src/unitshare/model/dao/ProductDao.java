@@ -39,7 +39,6 @@ public class ProductDao {
     //21. 물품등록
     public int productAdd(String pname , int pprice , String pcontent , int people , String openchat , int uno){
         try {
-
             String sql = "insert into product(pname , pprice , pcontent , people , openchat , uno)values(?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, pname);
@@ -62,8 +61,6 @@ public class ProductDao {
         }catch (SQLException e){System.out.println("[시스템오류] SQL 문법 문제발행" + e);}
         return 0;
     }
-
-
 
     //공동구매 참여취소:
     public boolean GroupCancel(int pno,String pwd) {
@@ -128,7 +125,6 @@ public class ProductDao {
                 int cpeople = rs.getInt("cpeople");
                 ProductDto productDto = new ProductDto(pno , pname , pprice , pcontent , pdate , openchat , people, cpeople);
                 products.add(productDto);
-
             }
         }catch(SQLException e){System.out.println("sql 문법문제 2" + e);}
         return products;
@@ -184,6 +180,7 @@ public class ProductDao {
                         rs.getString("pdate"),
                         rs.getString("openchat")
                 );
+
                 products.add(productDto);
             } // whi END
         }catch (SQLException e){
@@ -276,9 +273,6 @@ public class ProductDao {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, pno);
             ResultSet rs = ps.executeQuery();
-
-
-
 
             if (rs.next()) {
                 int perPrice = rs.getInt("pprice") / rs.getInt("people");
