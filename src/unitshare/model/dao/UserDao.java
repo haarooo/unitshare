@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class UserDao {
     //싱글톤 생성
-    private UserDao() {connect();} // <--- 아!!!!!!!!!! ??? 객체가 생성될 때 DB 연동을 시작합니다.
+    public UserDao() {connect();} // <--- 아!!!!!!!!!! ??? 객체가 생성될 때 DB 연동을 시작합니다.
 
     public static final UserDao instance = new UserDao();
 
@@ -149,19 +149,27 @@ public class UserDao {
     } // m END
 
     // 비밀번호 변경
-    public int newPwd(UserDto userDto, String newPwd){
+    public boolean newPwd(int uno, String currentPwd,String newPwd){
         try {
             String sql = "UPDATE user SET pwd = ? WHERE uno = ? AND pwd =?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,newPwd);
-            ps.setInt(2,userDto.getUno());
-            ps.setString(3,userDto.getPwd());
+            ps.setInt(2,uno);
+            ps.setString(3,currentPwd);
 
             int result = ps.executeUpdate();
+
+            if(result > 0){
+                System.out.println("[안내] 비밀번호 변경 성공!");
+                return true;
+            } else{
+                System.out.println("[경고] 현재 비밀번호가 틀렸거나 변경에 실패하였습니다.");
+                return false;
+            }
 
         }catch (Exception e){
             System.out.println("[경고] 비밀번호 변경 도중 에러 발생 : " + e);
         }
-        return 0;
+        return false;
     }
 } // class END

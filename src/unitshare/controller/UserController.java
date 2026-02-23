@@ -1,10 +1,13 @@
 package unitshare.controller;
 import unitshare.model.dto.UserDto;
 import unitshare.model.dao.UserDao;
+import unitshare.view.ProductView;
+import unitshare.view.UserView;
 
 import java.util.Scanner;
 
 public class UserController {
+    UserDao userDao = new UserDao();
     // 싱글톤 생성
     private UserController() {}
     private  static final UserController instance = new UserController();
@@ -83,22 +86,21 @@ public class UserController {
     }
 
 
-    // 비밀번호 변경 메소드
-    public boolean newPwd(){
-    Scanner scan = new Scanner(System.in);
-        // 입력 받기
-        System.out.println("==============비밀번호 변경===============");
-        System.out.print("현재 비밀번호를 입력해주세요 : ");
-        String currentPwd = scan.next();
-
-        System.out.println("새로운 비밀번호를 입력해주세요 : ");
-        String newPwd = scan.next();
-
-        // 로그인 여부 체크하기
-        // 로그인세션이 0이면 비로그인상태였뜸
-
-        return false;
-    }
+    // 비밀번호 변경 페이지
+    public boolean newPwd(String currentPwd, String newPwd){
+        if (loginSession==0) {
+            System.out.println("[경고] 로그인이 필요한 서비스입니다.");
+            return false;
+        }
+        // 현재 비밀번호, 새로운 비밀번호 같은지 체크
+        if(currentPwd.equals(newPwd)){
+            System.out.println("[경고] 현재 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.");
+            return false;
+        }
+        // DAO 호출, 전달받은 데이터와 현재 로그인 세션번호를 넘김
+        boolean result = userDao.newPwd(this.loginSession,currentPwd,newPwd);
+        return result;
+    } // m END
 
 }
 
