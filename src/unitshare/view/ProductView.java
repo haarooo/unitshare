@@ -1,6 +1,7 @@
 package unitshare.view;
 
 import unitshare.controller.ProductController;
+import unitshare.controller.UserController;
 import unitshare.model.dto.ProductDto;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class ProductView {
     public static ProductView getInstance(){return instance;}
     //호출
     private ProductController pc = ProductController.getInstance();
+    private UserController uc = UserController.getInstance();
 
     //로그인 이후 페이지
     public void index2() {
@@ -24,10 +26,11 @@ public class ProductView {
                 System.out.print(" 2.물품등록 📦   ");
                 System.out.println(" 3.구매신청 🛒");
 
-                System.out.print(" 4.공구신청목록 📜   ");
-                System.out.print(" 5.내가등록한물품 📋   ");
-                System.out.println(" 6.내가올린글삭제 ❌");
+                System.out.print(" 4.공구신청목록 📜 ");
+                System.out.print("5.내가등록한물품 📋 ");
+                System.out.println("6.내가올린글삭제 ❌");
                 System.out.println(" 7.구매취소 🚫");
+                System.out.println("8. 상태변경");
                 System.out.println("--------------------------------------------------");
                 System.out.print("선택 > ");
                 int ch = scan.nextInt();
@@ -38,6 +41,7 @@ public class ProductView {
                 else if (ch == 5) {myUpList();}
                 else if(ch==6){BoardCancel();}
                 else if(ch==7){GroupCancel();}
+                else if(ch==8){productDetail();}
                 else {System.out.println("[경고] 없는 기능 번호입니다.");}
             } catch (InputMismatchException e) {
                 System.out.println("[경고] 잘못된 입력 방식입니다.");
@@ -60,8 +64,8 @@ public class ProductView {
         if(people > 5){System.out.println("최대 4명까지 가능합니다");return;}
         scan.nextLine();
         System.out.print("오픈채팅링크 : "); String openchat = scan.nextLine();
-        boolean result = pc.productAdd(pname, pprice ,pcontent ,people ,openchat);
-        if(result){
+        int result = pc.productAdd(pname, pprice ,pcontent ,people ,openchat);
+        if(result == 1){
             System.out.println("[안내] 물품등록 완료");
         }else{
             System.out.println("[경고] 물품등록 실패");
@@ -96,6 +100,7 @@ public class ProductView {
             System.out.println("[오류] 알 수 없는 이유로 신청에 실패했습니다.");
         }
     }
+
 
     //공동구매 참여취소
     public void GroupCancel() {
@@ -157,22 +162,38 @@ public class ProductView {
         System.out.println("====================================================================");
     }
 
-    public void productDetail(int pno , int  uno){
 
-        System.out.println("1. 입금 | 2. 거래완료 | 0. 되돌아가기");
+
+    public void productDetail(){
+        System.out.println("상태 변경할 물품 번호");
+        int pno = scan.nextInt();
+        System.out.println("1. 거래동의 | 2. 입금 | 3. 거래완료 | 0. 뒤로가기");
         System.out.print("선택 > ");
         int ch = scan.nextInt();
+        if (ch == 0) {return;}
 
-        if (ch == 0) { return; }
-        if (ch == 1) {
-            int result = pc.payPoint(pno , uno);
+        else if(ch==1){
+            int uno = uc.getLoginSession();
+            int result = pc.tradeStart(pno , uno);
+            if(result ==1){
+                System.out.println("[안내] 거래 동의");
+            }else{System.out.println("거래시작 불가");}
+        }
+        else if(ch == 2) {
+            int uno = uc.getLoginSession();
+            int result= pc.payPoint(pno ,uno);
             if(result == 1) {
                 System.out.println("[안내] 입금 성공! 상태가 갱신되었습니다.");
             } else if(result == 2) {System.out.println("[경고] 잔액 부족");
             } else {System.out.println("[경고] 이미 입금했거나 처리할 수 없는 상태입니다.");}
-
+        }else if(ch==3) {
+            int uno = uc.getLoginSession();
+            int reult = pc.complete(pno, uno);
+            if (reult == 1) {
+                System.out.println("[안내] 거래 완료!");
+            } else {
+                System.out.println("[안내] 불가");
+            }
         }
-
-    }
-
-} // class END
+        }
+    }// class END
