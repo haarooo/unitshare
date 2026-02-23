@@ -81,7 +81,8 @@ public class UserDao {
                     return dto;
                 }
             }
-        }catch (Exception e){e.printStackTrace();}
+        }catch (Exception e){
+            System.out.println("[경고]비밀번호 찾기 오류" + e);}
         return null;
     }
     // 03 end // 0213 수정
@@ -110,7 +111,7 @@ public class UserDao {
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) return true;
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { System.out.println("[경고] 해당 아이디는 사용이 불가합니다" + e);}
         return false;
     }// 01-1 end
 
@@ -122,7 +123,7 @@ public class UserDao {
             ps.setString(1, phone);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) return true;
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { System.out.println("[경고] 해당 번호는 사용 불가합니다." + e);}
         return false;
     }    // 01-2 end
 
@@ -164,4 +165,22 @@ public class UserDao {
         }
         return 0;
     }
+
+    // 휴면계정 전환 // 0223 추가
+    public boolean loginStatement(int uno){
+        try {
+            String sql1 = "update user set loginState = 1 where uno = ?";
+            PreparedStatement ps = conn.prepareStatement(sql1);
+            ps.setInt(1, uno);
+            if (ps.executeUpdate() == 1) {
+                String sql2 = "insert into loginStatement(userState, uno) values (1, ?)";
+                PreparedStatement ps2 = conn.prepareStatement(sql2);
+                ps2.setInt(1, uno);
+                ps2.executeUpdate();
+                return true;
+            }
+        }catch (SQLException e){System.out.println("[경고] 휴면계정 처리 중 데이터베이스 통신 실패 " + e);}
+        return false;
+    }
+    // 휴면 end
 } // class END

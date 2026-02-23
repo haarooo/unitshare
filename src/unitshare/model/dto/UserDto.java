@@ -23,6 +23,7 @@ public class UserDto {
       this.point = point;
    }
 
+
    public int getUno() {return uno;}
    public void setUno(int uno) {this.uno = uno;}
    public String getId() {return id;}
