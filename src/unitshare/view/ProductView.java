@@ -30,7 +30,8 @@ public class ProductView {
                 System.out.print("5.내가등록한물품 📋 ");
                 System.out.println("6.내가올린글삭제 ❌");
                 System.out.print(" 7.구매취소 🚫");
-                System.out.println("  8. 거래현황 ");
+                System.out.print("  8. 거래현황 ");
+                System.out.println(" 9. 비밀번호 변경");
                 System.out.println("--------------------------------------------------");
                 System.out.print("선택 > ");
                 int ch = scan.nextInt();
