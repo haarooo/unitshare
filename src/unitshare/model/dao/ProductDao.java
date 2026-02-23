@@ -108,7 +108,7 @@ public class ProductDao {
 
 
     //22. 전체 공동구매 목록조회
-    public ArrayList<ProductDto> findAll(int page){
+    public ArrayList<ProductDto> findAll(){
         ////페이징처리
         int limit=5; //제한
         int begin=13;
@@ -298,7 +298,6 @@ public class ProductDao {
         } catch (Exception e) {System.out.println("입금 sql");}
         return 0;
     }
-
 
     //거래 완료
     public int complete(int pno , int uno){
