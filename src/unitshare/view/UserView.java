@@ -24,11 +24,11 @@ public class UserView {
         for (; ; ) {
             try {
                 System.out.println("\n┌────────────────────────────────────────────────────┐");
-                System.out.println("│             📢 UNIT SHARE FOR SOLO                │");
+                System.out.println("│             📢 UNIT SHARE FOR SOLO                 │");
                 System.out.println("├────────────────────────────────────────────────────┤");
                 if (uc.getLoginSession() == 0) {
-                    System.out.println("│  👤 1. 회원가입          🔑 2. 로그인             │");
-                    System.out.println("│  🔍 3. 아이디 찾기       🔒 4. 비밀번호 찾기      │");
+                    System.out.println("│  👤 1. 회원가입          🔑 2. 로그인                │");
+                    System.out.println("│  🔍 3. 아이디 찾기       🔒 4. 비밀번호 찾기          │");
                 }
                 System.out.println("└────────────────────────────────────────────────────┘");
                 System.out.print("✨ 선택 > ");
