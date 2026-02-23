@@ -14,14 +14,18 @@ import unitshare.model.dto.ProductDto;
 
 public class ProductDao {
     //싱글톤 생성
-    private ProductDao(){connect();}
+    private ProductDao() {
+        connect();
+    }
+
     private static final ProductDao instance = new ProductDao();
+
     public static ProductDao getInstance() {
         return instance;
     }
 
     //db 연동
-    private String url="jdbc:mysql://localhost:3306/unishare";
+    private String url = "jdbc:mysql://localhost:3306/unishare";
     private String user = "root";
     private String pw = "1234";
     private Connection conn;
@@ -37,7 +41,7 @@ public class ProductDao {
     }
 
     //21. 물품등록
-    public int productAdd(String pname , int pprice , String pcontent , int people , String openchat , int uno){
+    public int productAdd(String pname, int pprice, String pcontent, int people, String openchat, int uno) {
         try {
 
             String sql = "insert into product(pname , pprice , pcontent , people , openchat , uno)values(?,?,?,?,?,?)";
@@ -47,31 +51,33 @@ public class ProductDao {
             ps.setString(3, pcontent);
             ps.setInt(4, people);
             ps.setString(5, openchat);
-            ps.setInt(6 , uno);
+            ps.setInt(6, uno);
             int count = ps.executeUpdate();
-            if(count ==1){
+            if (count == 1) {
 
                 String sql2 = "select * from product order By pno desc limit 1";
-                PreparedStatement ps1 = conn.prepareStatement( sql2 );
+                PreparedStatement ps1 = conn.prepareStatement(sql2);
                 ResultSet rs = ps1.executeQuery();
-                if( rs.next() ){
-                    return rs.getInt( "pno" );
+                if (rs.next()) {
+                    return rs.getInt("pno");
                 }
+            } else {
+                return 0;
             }
-            else{return 0;}
-        }catch (SQLException e){System.out.println("[시스템오류] SQL 문법 문제발행" + e);}
+        } catch (SQLException e) {
+            System.out.println("[시스템오류] SQL 문법 문제발행" + e);
+        }
         return 0;
     }
 
 
-
     //공동구매 참여취소:
-    public boolean GroupCancel(int pno,String pwd) {
+    public boolean GroupCancel(int pno, String pwd) {
         try {
             String sql = "delete p from participant p inner join user u on p.uno=u.uno where p.pno=? and u.pwd=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, pno);
-            ps.setString(2,pwd);
+            ps.setString(2, pwd);
             int count = ps.executeUpdate();
             if (count == 1) {
                 return true;
@@ -79,7 +85,7 @@ public class ProductDao {
                 return false;
             }
         } catch (SQLException e) {
-            System.out.println("sql문법 오류발생"+e);
+            System.out.println("sql문법 오류발생" + e);
         }
         return false;
     }
@@ -107,11 +113,7 @@ public class ProductDao {
     }
 
 
-    //22. 전체 공동구매 목록조회
-    public ArrayList<ProductDto> findAll(){
         ////페이징처리
-        int limit=5; //제한
-        int begin=13;
 //    //22. 전체 공동구매 목록조회
 //    public ArrayList<ProductDto> findAll(){
 //        ////페이징처리
@@ -137,7 +139,6 @@ public class ProductDao {
 //            }
 //        }catch(SQLException e){System.out.println("sql 문법문제 2" + e);}
 //        return products;
-//    }
 
 
     //공동구매 신청 조회
@@ -150,7 +151,7 @@ public class ProductDao {
             ps.setInt(1, Start);
             ps.setInt(2, pageSize);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 int pno = rs.getInt("pno");
                 String pname = rs.getString("pname");
                 int pprice = rs.getInt("pprice");
@@ -159,29 +160,31 @@ public class ProductDao {
                 String openchat = rs.getString("openchat");
                 int people = rs.getInt("people");
                 int cpeople = rs.getInt("cpeople");
-                ProductDto productDto = new ProductDto(pno , pname , pprice , pcontent , pdate , openchat , people, cpeople);
+                ProductDto productDto = new ProductDto(pno, pname, pprice, pcontent, pdate, openchat, people, cpeople);
                 products.add(productDto);
 
             }
-        }catch(SQLException e){System.out.println("sql 문법문제 2" + e);}
+        } catch (SQLException e) {
+            System.out.println("sql 문법문제 2" + e);
+        }
         return products;
     }
 
-            //전체 상품갯수가 몇인지 카운트로 개수
+    //전체 상품갯수가 몇인지 카운트로 개수
     public int getTotalCount() {
         try {
             String sql = "SELECT COUNT(*) FROM product";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
-            if(rs.next()) {
+            if (rs.next()) {
                 return rs.getInt(1);
             }
-        } catch (Exception e) { System.out.println(e); }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return 0;
     }
-
-
 
 
     // 내 구매 신청 목록 조회
@@ -190,9 +193,9 @@ public class ProductDao {
 
         String sql = "SELECT p.* FROM product p INNER JOIN participant t ON p.pno = t.pno WHERE t.uno = ?";
 
-            try{
+        try {
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, uno );
+            ps.setInt(1, uno);
 
 
             ResultSet rs = ps.executeQuery();
@@ -207,7 +210,7 @@ public class ProductDao {
 
                 products.add(productDto);
             } // whi END
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("[시스템 오류] sql 문법문제 발생" + e);
         }
         return products;
@@ -340,7 +343,7 @@ public class ProductDao {
                 return 2; // 업데이트 실패
             }
         } catch (Exception e) {
-            System.out.println("거래준비오류: "+ e);
+            System.out.println("거래준비오류: " + e);
         }
         return 0; // 에러
     }
@@ -351,7 +354,8 @@ public class ProductDao {
             // 현재 상태 확인 (중복 입금 및 완료된 거래 방지)
             String sql0 = "select status from participant where pno = ? and uno = ?";
             PreparedStatement ps0 = conn.prepareStatement(sql0);
-            ps0.setInt(1, pno); ps0.setInt(2, uno);
+            ps0.setInt(1, pno);
+            ps0.setInt(2, uno);
             ResultSet rs0 = ps0.executeQuery();
 
             if (rs0.next()) {
@@ -369,7 +373,9 @@ public class ProductDao {
             ps1.setInt(1, pno);
             ResultSet rs1 = ps1.executeQuery();
 
-            int ownerUno = -1; int totalPeople = 0; int pprice = 0;
+            int ownerUno = -1;
+            int totalPeople = 0;
+            int pprice = 0;
             if (rs1.next()) {
                 ownerUno = rs1.getInt("uno");
                 totalPeople = rs1.getInt("people");
@@ -429,7 +435,9 @@ public class ProductDao {
             PreparedStatement ps1 = conn.prepareStatement(sql1);
             ps1.setInt(1, pno);
             ResultSet rs1 = ps1.executeQuery();
-            int hostUno = -1; int pprice = 0; int totalPeople = 0;
+            int hostUno = -1;
+            int pprice = 0;
+            int totalPeople = 0;
             if (rs1.next()) {
                 hostUno = rs1.getInt("uno");
                 pprice = rs1.getInt("pprice");
@@ -452,11 +460,11 @@ public class ProductDao {
             }
 
 
-
             // 내 참여 상태 확인
             String sql2 = "SELECT status from participant WHERE pno = ? AND uno = ?";
             PreparedStatement ps2 = conn.prepareStatement(sql2);
-            ps2.setInt(1, pno); ps2.setInt(2, uno);
+            ps2.setInt(1, pno);
+            ps2.setInt(2, uno);
             ResultSet rs2 = ps2.executeQuery();
 
             if (rs2.next()) {
@@ -469,11 +477,11 @@ public class ProductDao {
             }
 
 
-
             // 상태를 거래완료로 변경
             String sql3 = "UPDATE participant SET status = 3 WHERE pno = ? AND uno = ?";
             PreparedStatement ps3 = conn.prepareStatement(sql3);
-            ps3.setInt(1, pno); ps3.setInt(2, uno);
+            ps3.setInt(1, pno);
+            ps3.setInt(2, uno);
 
             int result = ps3.executeUpdate();
 
@@ -512,5 +520,5 @@ public class ProductDao {
         }
         return 0; // 시스템/SQL 오류
     }
+}
 
-    }
