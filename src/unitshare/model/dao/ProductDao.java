@@ -96,7 +96,10 @@ public class ProductDao {
 
 
     //22. 전체 공동구매 목록조회
-    public ArrayList<ProductDto> findAll(){
+    public ArrayList<ProductDto> findAll(int page){
+        ////페이징처리
+        int limit=5; //제한
+        int begin=13;
         ArrayList<ProductDto> products = new ArrayList<>();
         try{
             String sql = "SELECT *, (SELECT COUNT(*) FROM participant WHERE participant.pno = product.pno) AS cpeople FROM product";
@@ -168,7 +171,6 @@ public class ProductDao {
                         rs.getString("pdate"),
                         rs.getString("openchat")
                 );
-
                 products.add(productDto);
             } // whi END
         }catch (SQLException e){
@@ -255,5 +257,8 @@ public class ProductDao {
         return 0; // 기타 오류 (이미 냈거나 등)
     }
 
-
+    public class Page {
+        private int pageNum;
+        private int totalBoard;
+    }
 }
