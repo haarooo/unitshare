@@ -1,4 +1,5 @@
 package unitshare.controller;
+
 import unitshare.model.dto.UserDto;
 import unitshare.model.dao.UserDao;
 
@@ -99,3 +100,4 @@ public class UserController {
 
     }
 }
+
