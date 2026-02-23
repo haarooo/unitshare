@@ -77,13 +77,19 @@ public class ProductView {
 
     //21 전체 공동구매 목록조회
     public void findAll(){
-        ArrayList<ProductDto> products = pc.findAll();
+        int page=1; //기본 초기값 페이지번호
+        ArrayList<ProductDto> products = pc.findAll(page,5);
+        int totalPage = pc.getTotalPages(5);
         for(ProductDto product : products){
             int cpeople =product.getPeople() - product.getCpeople();
             if(cpeople <0 ){cpeople = 0;}
             System.out.printf("번호 : %d , 제품명 : %s , 가격 : %d , 설명 : %s , 인원수 : %d(남은자리)/%d(총인원) , 오픈채팅링크 : %s , 등록일 : %s \n"
                     ,product.getPno() , product.getPname(), product.getPprice(), product.getPcontent(), cpeople, product.getPeople(), product.getOpenchat(), product.getPdate() );
+
+            System.out.println("\n========= [ 공동구매 목록 " + page + " / " + totalPage + " ] =========");
         }
+
+
         System.out.println("======================");
         System.out.print("신청할 공동구매 목록 번호(뒤로가기 0) : "); int apply = scan.nextInt();
         if(apply == 0){index2();
@@ -99,6 +105,7 @@ public class ProductView {
         } else {
             System.out.println("[오류] 알 수 없는 이유로 신청에 실패했습니다.");
         }
+
     }
 
 
@@ -196,4 +203,7 @@ public class ProductView {
             }
         }
         }
+
+
+
     }// class END

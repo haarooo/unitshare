@@ -32,9 +32,20 @@ public class ProductController {
 
 
     //21. 전체 공동구매 목록조회
-    public ArrayList<ProductDto> findAll(){
-        ArrayList<ProductDto> result = pd.findAll();
-        return result;
+    public ArrayList<ProductDto> findAll(int page, int pageSize) {
+        return pd.findAll(page, pageSize);
+    }
+
+    public int getTotalPages(int pageSize) {
+        int totalCount = pd.getTotalCount();
+
+        int totalPages = totalCount / pageSize;
+        if (totalCount % pageSize > 0) {
+            totalPages++;
+        }
+        if (totalPages == 0) return 1;
+
+        return totalPages;
     }
 
 
@@ -90,5 +101,6 @@ public class ProductController {
     public int complete(int pno , int uno){
         return pd.complete(pno , uno);
     }
+
 
 }
