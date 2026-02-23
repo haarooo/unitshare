@@ -4,7 +4,6 @@ import unitshare.model.dao.ProductDao;
 import unitshare.model.dto.ProductDto;
 import unitshare.view.UserView;
 
-import java.lang.classfile.Attribute;
 import java.util.ArrayList;
 
 public class ProductController {
