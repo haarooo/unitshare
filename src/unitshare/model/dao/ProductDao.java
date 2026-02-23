@@ -1,5 +1,6 @@
 package unitshare.model.dao;
 
+import unitshare.controller.ProductController;
 import unitshare.model.dto.ProductDto;
 
 import java.sql.*;
@@ -36,8 +37,9 @@ public class ProductDao {
     }
 
     //21. 물품등록
-    public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat , int uno){
+    public int productAdd(String pname , int pprice , String pcontent , int people , String openchat , int uno){
         try {
+
             String sql = "insert into product(pname , pprice , pcontent , people , openchat , uno)values(?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, pname);
@@ -47,11 +49,21 @@ public class ProductDao {
             ps.setString(5, openchat);
             ps.setInt(6 , uno);
             int count = ps.executeUpdate();
-            if (count == 1) {return true;}
-            else {return false;}
+            if(count ==1){
+
+                String sql2 = "select * from product order By pno desc limit 1";
+                PreparedStatement ps1 = conn.prepareStatement( sql2 );
+                ResultSet rs = ps1.executeQuery();
+                if( rs.next() ){
+                    return rs.getInt( "pno" );
+                }
+            }
+            else{return 0;}
         }catch (SQLException e){System.out.println("[시스템오류] SQL 문법 문제발행" + e);}
-        return false;
+        return 0;
     }
+
+
 
     //공동구매 참여취소:
     public boolean GroupCancel(int pno,String pwd) {
@@ -116,6 +128,7 @@ public class ProductDao {
                 int cpeople = rs.getInt("cpeople");
                 ProductDto productDto = new ProductDto(pno , pname , pprice , pcontent , pdate , openchat , people, cpeople);
                 products.add(productDto);
+
             }
         }catch(SQLException e){System.out.println("sql 문법문제 2" + e);}
         return products;
@@ -179,6 +192,17 @@ public class ProductDao {
         return products;
     } // m END
 
+    //등록자 참여자 신청
+    public int myGroupBuying(int pno , int uno){
+        try{
+            String sql4 = "insert into participant(pno , uno , status)values (?,?,0)";
+            PreparedStatement ps4 = conn.prepareStatement(sql4);
+            ps4.setInt(1 ,pno);
+            ps4.setInt(2 , uno);
+            if(ps4.executeUpdate() ==1)return 1;
+        }catch (Exception e){System.out.println("sql오류");}
+        return 0;
+    }
 
     //공동구매 신청
     public int groupBuying(int pno , int uno){
@@ -216,7 +240,7 @@ public class ProductDao {
                 if(myApply > 0)return 3;
             }
 
-            String sql4 = "insert into participant(pno , uno , status)values (?,?,1)";
+            String sql4 = "insert into participant(pno , uno , status)values (?,?,0)";
             PreparedStatement ps4 = conn.prepareStatement(sql4);
             ps4.setInt(1 ,pno);
             ps4.setInt(2 , uno);
@@ -224,6 +248,22 @@ public class ProductDao {
 
         }catch (Exception e){System.out.println("sql오류");}
         return 0;
+    }
+
+
+    //거래 시작 상태 변경
+    public int tradeStart(int pno , int uno){
+        try{
+            String sql = "UPDATE participant SET status = 1 WHERE pno = ? AND uno = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, pno);
+            ps.setInt(2, uno);
+            int result = ps.executeUpdate();
+            if(result ==1 ){return 1;}
+            else{return 0;}
+        }catch (SQLException e){
+            System.out.println("sql오류 거래시작");
+        }return 0;
     }
 
 
@@ -237,24 +277,42 @@ public class ProductDao {
             ps.setInt(1, pno);
             ResultSet rs = ps.executeQuery();
 
+
+
+
             if (rs.next()) {
                 int perPrice = rs.getInt("pprice") / rs.getInt("people");
-                String sql2 = "UPDATE user SET point = point - ? WHERE uno = ? AND point >= ?";
+                String sql2 = "UPDATE user SET point = point - ? WHERE uno = ? AND point >= ? and status = 1";
                 ps = conn.prepareStatement(sql2);
                 ps.setInt(1, perPrice); ps.setInt(2, uno); ps.setInt(3, perPrice);
 
                 if (ps.executeUpdate() == 1) {
-                    // 3. 차감 성공했으면 참여자 테이블의 입금 상태(is_paid)를 1로 변경
-                    String sql3 = "UPDATE participant SET is_paid = 1 WHERE pno = ? AND uno = ?";
+                    String sql3 = "UPDATE participant SET status = 2 WHERE pno = ? AND uno = ?";
                     ps = conn.prepareStatement(sql3);
                     ps.setInt(1, pno); ps.setInt(2, uno);
                     ps.executeUpdate();
+                    return 1;
 
-                    return 1; // 입금 성공
-                } return 2; // 포인트 부족
+                } else{return 0;}
             }
-        } catch (Exception e) { e.printStackTrace(); }
-        return 0; // 기타 오류 (이미 냈거나 등)
+        } catch (Exception e) {System.out.println("입금 sql");}
+        return 0;
+    }
+
+
+    //거래 완료
+    public int complete(int pno , int uno){
+        try{
+            String sql = "UPDATE participant SET status = 3 WHERE pno = ? AND uno = ? AND status = 2";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, pno);
+            ps.setInt(2, uno);
+            int result = ps.executeUpdate();
+            if(result ==1){return 1;}
+            else{return 0;}
+        }catch (SQLException e){
+            System.out.println("sql 거래상태 이상");
+        }return 0;
     }
 
     public class Page {

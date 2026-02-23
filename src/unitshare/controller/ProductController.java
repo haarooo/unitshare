@@ -2,7 +2,9 @@ package unitshare.controller;
 
 import unitshare.model.dao.ProductDao;
 import unitshare.model.dto.ProductDto;
+import unitshare.view.UserView;
 
+import java.lang.classfile.Attribute;
 import java.util.ArrayList;
 
 public class ProductController {
@@ -19,11 +21,15 @@ public class ProductController {
 
 
     //20. 물품등록
-    public boolean productAdd(String pname , int pprice , String pcontent , int people , String openchat){
+    public int productAdd(String pname , int pprice , String pcontent , int people , String openchat){
         int uno = uc.getLoginSession();
-        boolean result = pd.productAdd(pname, pprice, pcontent, people, openchat , uno);
-        return result;
+        int result = pd.productAdd(pname, pprice, pcontent, people, openchat , uno);
+
+        int result2 =pd.myGroupBuying(result , uno);
+
+        return result2;
     }
+
 
 
     //21. 전체 공동구매 목록조회
@@ -72,11 +78,18 @@ public class ProductController {
         int uno = uc.getLoginSession();
         return pd.groupBuying(pno , uno);
     }
-
+    //거래시작
+    public int tradeStart(int pno , int uno){
+        return pd.tradeStart(pno , uno);
+    }
 
     // 1. 포인트 입금(전송) 컨트롤러
     public int payPoint(int pno , int uno) {
         return pd.payPoint(pno , uno);
+    }
+    //거려완료 상태
+    public int complete(int pno , int uno){
+        return pd.complete(pno , uno);
     }
 
 }
