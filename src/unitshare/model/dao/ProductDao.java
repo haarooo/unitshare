@@ -299,7 +299,6 @@ public class ProductDao {
         return 0;
     }
 
-
     //거래 완료
     public int complete(int pno , int uno){
         try{

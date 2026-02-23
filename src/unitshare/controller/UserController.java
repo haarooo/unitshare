@@ -81,8 +81,9 @@ public class UserController {
     public void setUd(UserDao ud) {
         this.ud = ud;
     }
+
     // 비밀번호 변경 메소드
-    public boolean newPwd() {
+    public boolean newPwd(){
         Scanner scan = new Scanner(System.in);
         // 입력 받기
         System.out.println("==============비밀번호 변경===============");
@@ -98,6 +99,3 @@ public class UserController {
 
     }
 }
-
-
-
