@@ -81,7 +81,7 @@ public class UserController {
     public void setUd(UserDao ud) {
         this.ud = ud;
     }
-}
+
 
     // 비밀번호 변경 메소드
     public boolean newPwd(){
@@ -97,5 +97,7 @@ public class UserController {
         // 로그인 여부 체크하기
         // 로그인세션이 0이면 비로그인상태였뜸
 
+        return false;
+    }
     }
 
