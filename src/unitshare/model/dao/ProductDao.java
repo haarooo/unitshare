@@ -266,10 +266,6 @@ public class ProductDao {
 
 
 
-
-
-
-
     //포인트 입금 함수
     public int payPoint(int pno, int uno) {
         try {
@@ -278,8 +274,6 @@ public class ProductDao {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, pno);
             ResultSet rs = ps.executeQuery();
-
-
 
 
 
