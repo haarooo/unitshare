@@ -25,7 +25,6 @@ public class ProductController {
         int result = pd.productAdd(pname, pprice, pcontent, people, openchat , uno);
 
         int result2 =pd.myGroupBuying(result , uno);
-
         return result2;
     }
 

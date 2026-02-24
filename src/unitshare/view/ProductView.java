@@ -78,34 +78,61 @@ public class ProductView {
     Scanner scan = new Scanner(System.in);
 
     //21 전체 공동구매 목록조회
-    public void findAll(){
-        int page=1; //기본 초기값 페이지번호
-        ArrayList<ProductDto> products = pc.findAll(page,5);
+    public void findAll() {
+        int page = 1;
         int totalPage = pc.getTotalPages(5);
-        for(ProductDto product : products){
-            int cpeople =product.getPeople() - product.getCpeople();
-            if(cpeople <0 ){cpeople = 0;}
-            System.out.printf("번호 : %d , 제품명 : %s , 가격 : %d , 설명 : %s , 인원수 : %d(남은자리)/%d(총인원) , 오픈채팅링크 : %s , 등록일 : %s \n"
-                    ,product.getPno() , product.getPname(), product.getPprice(), product.getPcontent(), cpeople, product.getPeople(), product.getOpenchat(), product.getPdate() );
 
+        while (true) {
             System.out.println("\n========= [ 공동구매 목록 " + page + " / " + totalPage + " ] =========");
-        }
-        System.out.println("======================");
-        System.out.print("신청할 공동구매 목록 번호(뒤로가기 0) : "); int apply = scan.nextInt();
-        if(apply == 0){index2();
-        }int result = pc.groupBuying(apply);
-        if(result ==1 ){
-            System.out.println("공동구매 신청 성공");
-        }else if (result == 2) {
-            System.out.println("[경고] 본인이 등록한 물품은 신청할 수 없습니다.");
-        } else if (result == 3) {
-            System.out.println("[경고] 이미 신청한 물품입니다.");
-        } else if (result == 4) {
-            System.out.println("[경고] 신청 실패: 모집 인원이 이미 가득 찼습니다.");
-        } else {
-            System.out.println("[오류] 알 수 없는 이유로 신청에 실패했습니다.");
-        }
-    }
+            ArrayList<ProductDto> products = pc.findAll(page, 5);
+
+            for (ProductDto product : products) {
+                int cpeople = product.getPeople() - product.getCpeople();
+                if (cpeople < 0) { cpeople = 0; }
+                System.out.printf("번호 : %d , 제품명 : %s , 가격 : %d , 설명 : %s , 인원수 : %d(남은자리)/%d(총인원) , 오픈채팅링크 : %s , 등록일 : %s \n",
+                        product.getPno(), product.getPname(), product.getPprice(), product.getPcontent(), cpeople, product.getPeople(), product.getOpenchat(), product.getPdate());
+            }
+
+            System.out.print("\n신청할 번호 선택 (이전: b / 다음: p / 뒤로가기: 0): ");
+            String next = scan.next();
+            //페이지 로직
+            if (next.equalsIgnoreCase("p")) {
+                if (page < totalPage) page++;
+                else System.out.println("[알림] 마지막 페이지입니다.");
+                continue;
+            }
+
+            if (next.equalsIgnoreCase("b")) {
+                if (page > 1) page--;
+                continue;
+            }
+            try {
+                int apply = Integer.parseInt(next);
+
+                if (apply == 0) {
+                    return;
+                }
+
+                // 신청 로직 수행
+                int result = pc.groupBuying(apply);
+                if (result == 1) {
+                    System.out.println("공동구매 신청 성공");
+                    return;
+                } else if (result == 2) {
+                    System.out.println("[경고] 본인이 등록한 물품은 신청할 수 없습니다.");
+                } else if (result == 3) {
+                    System.out.println("[경고] 이미 신청한 물품입니다.");
+                } else if (result == 4) {
+                    System.out.println("[경고] 신청 실패: 모집 인원이 이미 가득 찼습니다.");
+                } else {
+                    System.out.println("[오류] 신청에 실패했습니다.");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("[알림] 올바른 번호(숫자)나 'p', 'b'를 입력해주세요.");
+            }
+        } //while end
+    } //findAll end
 
 
     //공동구매 참여취소

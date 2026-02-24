@@ -113,7 +113,7 @@ public class ProductDao {
     }
 
 
-        ////페이징처리
+//        //페이징처리
 //    //22. 전체 공동구매 목록조회
 //    public ArrayList<ProductDto> findAll(){
 //        ////페이징처리
@@ -146,7 +146,7 @@ public class ProductDao {
         ArrayList<ProductDto> products = new ArrayList<>();
         int Start = (page - 1) * pageSize; //시작번호(pno)=페이지번호-1*5 :
         try {
-            String sql = "select*from product order by pno desc limit ?,?";
+            String sql = "SELECT *, (SELECT COUNT(*) FROM participant WHERE participant.pno = product.pno) AS cpeople FROM product ORDER BY pno DESC LIMIT ?, ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, Start);
             ps.setInt(2, pageSize);
@@ -162,7 +162,6 @@ public class ProductDao {
                 int cpeople = rs.getInt("cpeople");
                 ProductDto productDto = new ProductDto(pno, pname, pprice, pcontent, pdate, openchat, people, cpeople);
                 products.add(productDto);
-
             }
         } catch (SQLException e) {
             System.out.println("sql 문법문제 2" + e);
