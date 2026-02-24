@@ -174,7 +174,7 @@ public class ProductView {
         mylist();
         System.out.print("상태 변경할 물품 번호 입력 : ");
         int pno = scan.nextInt();
-        System.out.println("----------------------- [ 거래 관리 ] -----------------------");
+        System.out.println("----------------------- [ 거래 현황 ] -----------------------");
         System.out.println(" 1. 거래준비(동의) ✅ | 2. 포인트 입금 💰 | 3. 거래완료 🏁 | 0. 뒤로가기");
         System.out.print(" 선택 > ");
         int ch = scan.nextInt();
