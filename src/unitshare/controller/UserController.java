@@ -108,6 +108,12 @@ public class UserController {
         boolean result = userDao.newPwd(this.loginSession, currentPwd, newPwd);
         return result;
     } // m END
+
+    public int pointAdd(int point , String pwd){
+        int uno = getLoginSession();
+        int result = ud.pointAdd(point , uno , pwd);
+        return result;
+    }
 }
 
 

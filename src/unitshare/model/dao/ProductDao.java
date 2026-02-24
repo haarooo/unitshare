@@ -305,7 +305,7 @@ public class ProductDao {
         return 0;
     }
 
-
+    //거래 준비
     public int tradeStart(int pno, int uno) {
         try {
             // 내 현재 상태 확인
@@ -347,7 +347,7 @@ public class ProductDao {
         return 0; // 에러
     }
 
-
+    //입금함수
     public int payPoint(int pno, int uno) {
         try {
             // 현재 상태 확인 (중복 입금 및 완료된 거래 방지)
@@ -446,13 +446,13 @@ public class ProductDao {
 
 
             //전원 입금 완료 상태 여부 확인
-            String sql_check = "select count(*) from participant where pno = ? and status < 2";
-            PreparedStatement ps_check = conn.prepareStatement(sql_check);
-            ps_check.setInt(1, pno);
-            ResultSet rs_check = ps_check.executeQuery();
+            String sql6 = "select count(*) from participant where pno = ? and status < 2";
+            PreparedStatement ps6 = conn.prepareStatement(sql6);
+            ps6.setInt(1, pno);
+            ResultSet rs6 = ps6.executeQuery();
 
-            if (rs_check.next()) {
-                int notPaidCount = rs_check.getInt(1);
+            if (rs6.next()) {
+                int notPaidCount = rs6.getInt(1);
                 if (notPaidCount > 1) {
                     return 5; // 전원 입금 미완료
                 }
@@ -519,5 +519,6 @@ public class ProductDao {
         }
         return 0; // 시스템/SQL 오류
     }
+
 }
 

@@ -31,10 +31,12 @@ public class ProductView {
                 System.out.println("6.내가올린글삭제 ❌");
                 System.out.print(" 7.구매취소 🚫");
                 System.out.print("  8. 거래현황 ");
-                System.out.println(" 9. 비밀번호 변경");
+                System.out.print(" 9. 비밀번호 변경");
+                System.out.println(" 10. 포인트 충전 ");
                 System.out.println("--------------------------------------------------");
                 System.out.print("선택 > ");
                 int ch = scan.nextInt();
+                scan.nextLine();
                 if (ch == 1) {UserView.getInstance().logout();}
                 else if (ch == 2) {productAdd();}
                 else if (ch == 3) {findAll();}
@@ -44,9 +46,10 @@ public class ProductView {
                 else if(ch==7){GroupCancel();}
                 else if(ch==8){productDetail();}
                 else if(ch==9){UserView.getInstance().newPwd();}
+                else if(ch==10){UserView.getInstance().pointAdd();}
                 else {System.out.println("[경고] 없는 기능 번호입니다.");}
             } catch (InputMismatchException e) {
-                System.out.println("[경고] 잘못된 입력 방식입니다.");
+                System.out.println("[경고] 잘못된 입력 방식입니다." + e);
                 scan = new Scanner(System.in); // 입력객체 초기화
             } catch (Exception e) {
                 System.out.println("[시스템 오류] 관리자에게 문의하십시오.");
@@ -201,7 +204,7 @@ public class ProductView {
         mylist();
         System.out.print("상태 변경할 물품 번호 입력 : ");
         int pno = scan.nextInt();
-        System.out.println("----------------------- [ 거래 관리 ] -----------------------");
+        System.out.println("----------------------- [ 거래 현황 ] -----------------------");
         System.out.println(" 1. 거래준비(동의) ✅ | 2. 포인트 입금 💰 | 3. 거래완료 🏁 | 0. 뒤로가기");
         System.out.print(" 선택 > ");
         int ch = scan.nextInt();
