@@ -60,7 +60,7 @@ public class UserController {
 
     // 로그인 메소드
     private int loginSession = 0; // 세션:일정한 저장소 구역
-    private timerThread timerThread;
+    public TimerThread timerThread = new TimerThread();
 
     public boolean login(String id, String pwd) {
         int result = ud.login(id, pwd);
@@ -72,10 +72,9 @@ public class UserController {
 
            // 타이머 시작
             if( timerThread != null) timerThread.state= false;// 기존 타이머가 있다면 종료
-            timerThread  = new timerThread(id, loginSession, this);// 현재 유저 정보 전달
+            timerThread  = new TimerThread(id, loginSession, this);// 현재 유저 정보 전달
             timerThread.state = true; //(1)실행 상태로 변경
             timerThread.start(); // 새 스레드로 30초 시작
-
             return true;
         }
         return false;
@@ -116,42 +115,14 @@ public class UserController {
         boolean result = userDao.newPwd(this.loginSession, currentPwd, newPwd);
         return result;
     } // m END
+    // UserController.java
 
+    public boolean isTimerOff() {
+        if (this.timerThread == null) return false; // 1. 만약 타이머 스레드가 아예 없거나 아직 시작 안 했다면 정상 진행(false)
+        this.timerThread.second = 0;// 2. [시간 리셋] 사용자가 입력을 했으므로 스레드의 시간을 0으로 되돌림
+        if (this.timerThread.state == false) {      // 3. [상태 확인] 이미 7초가 지나서 스레드가 state를 false로 바꿨는지 확인
+            return true; }// 7초 지남! (View에서 return 하도록 true 반환)
+          return false;} // 아직 시간 남음! (View에서 계속 진행)
 }
-class timerThread extends Thread{ // 0223 수정
-    boolean state = false;
-    String id;
-    int uno;
-    UserController uc;
-    // 생성자
-    public timerThread(String id, int uno, UserController userController){
-        this.id = id;
-        this.uno = uno;
-        this.uc = userController;
-    }
-    @Override
-    public void run(){
-        int second = 0; // 타이머 초 초기화
-        while(state){ // state가 true인 동안 반복
-            try{ Thread.sleep(1000); // 1초 대기
-                second++;
-                // 경고메세지
-                if (second == 3) {
-                    System.out.println("\n--------------------------------------------------");
-                    System.out.println("[안내] 아무런 활동이 없으시다면, 7초 뒤에 휴면계정으로 전환 및 자동 로그아웃됩니다.");
-                    System.out.println("--------------------------------------------------\n");
-                }
-                // 타이머가 10초 지났을 때
-                else if( second > 10){
-                    System.out.println("[안내] 장기간 활동이 없으므로 메인페이지로 돌아갑니다.");
-                    uc.getUd().loginStatement(uno); // DB를 '휴면계정'으로 상태 변경
-                    uc.logout(); // 자동 로그아웃
-                    unitshare.view.UserView.getInstance().index(); // 메인으로 강제 이동
-                    this.state = false; // 타이머 중지
-                    break;
-                }
-            }catch (Exception e){System.out.println("[경고] 휴면계정으로 전환 중에 문제가 발생했습니다." + e);}
-        }// while end
-    } // method(run) end
-} // Thread class end
+
 

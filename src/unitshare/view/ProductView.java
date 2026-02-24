@@ -19,13 +19,15 @@ public class ProductView {
     //로그인 이후 페이지
     public void index2() {
         for (; ; ) {
-            try {
+            try { if(uc.isTimerOff()) return;
+                System.out.println("\n--------------------------------------------------");
+                System.out.println("[안내] 아무런 활동이 없으시다면, 7초 뒤에 휴면계정으로 전환 및 자동 로그아웃됩니다.");
+                System.out.println("--------------------------------------------------\n");
                 System.out.println("\n[ UNIT SHARE FOR SOLO ]");
                 System.out.println("--------------------------------------------------");
                 System.out.print(" 1.로그아웃 🏠   ");
                 System.out.print(" 2.물품등록 📦   ");
                 System.out.println(" 3.구매신청 🛒");
-
                 System.out.print(" 4.공구신청목록 📜 ");
                 System.out.print("5.내가등록한물품 📋 ");
                 System.out.println("6.내가올린글삭제 ❌");
@@ -35,6 +37,8 @@ public class ProductView {
                 System.out.println("--------------------------------------------------");
                 System.out.print("선택 > ");
                 int ch = scan.nextInt();
+                uc.timerThread.second = 0;
+                if(false == uc.timerThread.state){ break;}
                 if (ch == 1) {UserView.getInstance().logout();}
                 else if (ch == 2) {productAdd();}
                 else if (ch == 3) {findAll();}
@@ -59,13 +63,19 @@ public class ProductView {
     public void productAdd(){
         Scanner scan = new Scanner(System.in);
         System.out.print("제품명 : "); String pname = scan.nextLine();
+        if(uc.isTimerOff()) return;
         System.out.print("가격 : "); int pprice = scan.nextInt();
         scan.nextLine();
+        if(uc.isTimerOff()) return;
         System.out.print("설명 : "); String pcontent = scan.nextLine();
+        if(uc.isTimerOff()) return;
         System.out.print("인원수 : "); int people = scan.nextInt();
+        if(uc.isTimerOff()) return;
         if(people > 5){System.out.println("최대 4명까지 가능합니다");return;}
         scan.nextLine();
+        if(uc.isTimerOff()) return;
         System.out.print("오픈채팅링크 : "); String openchat = scan.nextLine();
+        if(uc.isTimerOff()) return;
         int result = pc.productAdd(pname, pprice ,pcontent ,people ,openchat);
         if(result == 1){
             System.out.println("[안내] 물품등록 완료");
@@ -92,6 +102,7 @@ public class ProductView {
         }
         System.out.println("======================");
         System.out.print("신청할 공동구매 목록 번호(뒤로가기 0) : "); int apply = scan.nextInt();
+        if(uc.isTimerOff()) return;
         if(apply == 0){index2();
         }int result = pc.groupBuying(apply);
         if(result ==1 ){
@@ -120,8 +131,10 @@ public class ProductView {
         System.out.println("====================================================================");
         System.out.print("취소하고싶은 게시물 번호를 입력하세요.");
         int pno = scan.nextInt();
+        if(uc.isTimerOff()) return;
         System.out.print("비밀번호 입력:");
         String pwd = scan.next();
+        if(uc.isTimerOff()) return;
         boolean result = pc.GroupCancel(pno,pwd);
     }
 
@@ -139,8 +152,11 @@ public class ProductView {
 
         System.out.println("삭제할 게시물 번호를 입력해주세요.");
         int pno = scan.nextInt();
+        if(uc.isTimerOff()) return;
+
         System.out.print("비밀번호 입력:");
         String pwd = scan.next();
+        if(uc.isTimerOff()) return;
         boolean result = pc.BoardCancel(pno,pwd);
     }
 
@@ -159,7 +175,6 @@ public class ProductView {
     // 내가 등록한 물품 목록 조회
     public void myUpList(){
         ArrayList<ProductDto> products = pc.myUpList();
-
         System.out.println("========================== 내가 등록한 물품 목록 ==========================");
         for(ProductDto product : products){
             System.out.printf(" 번호 : %d , 제품명 : %s , 가격 : %d , 등록일 : %s , 오픈채팅방링크 : %s \n",
@@ -174,12 +189,12 @@ public class ProductView {
         mylist();
         System.out.print("상태 변경할 물품 번호 입력 : ");
         int pno = scan.nextInt();
+        if(uc.isTimerOff()) return;
         System.out.println("----------------------- [ 거래 관리 ] -----------------------");
         System.out.println(" 1. 거래준비(동의) ✅ | 2. 포인트 입금 💰 | 3. 거래완료 🏁 | 0. 뒤로가기");
         System.out.print(" 선택 > ");
         int ch = scan.nextInt();
-        if (ch == 0) {return;}
-
+        if(uc.isTimerOff()) return;
         if (ch == 0) return;
         int uno = uc.getLoginSession();
 
