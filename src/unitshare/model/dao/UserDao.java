@@ -190,5 +190,21 @@ public class UserDao {
         }catch (SQLException e){System.out.println("[경고] 휴면계정 처리 중 데이터베이스 통신 실패 " + e);}
         return false;
     }
-    // 휴면 end
+
+
+    public int pointAdd(int point , int uno , String pwd){
+        try{
+
+            String sql1 = "update user set point = point + ? where uno = ? and pwd = ?";
+            PreparedStatement ps1 = conn.prepareStatement(sql1);
+            ps1.setInt(1 , point);
+            ps1.setInt(2, uno);
+            ps1.setString(3, pwd);
+            int count = ps1.executeUpdate();
+            if(count == 1){return 1;
+            }else{return 2;}
+
+        }catch (SQLException e){System.out.println(" 포인트 sql오류 ");}
+        return 0;
+    }
 } // class END

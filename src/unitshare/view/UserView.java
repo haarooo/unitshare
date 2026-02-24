@@ -184,6 +184,28 @@ public class UserView {
                 return false;
             }
     }
+
+    public int pointAdd(){
+
+        System.out.println("================포인트 충전===============");
+        System.out.print("충전할 포인트를 입력하세요 : ");
+        int newPoint = scan.nextInt();
+        scan.nextLine();
+        System.out.print("현재 비밀번호를 입력해주세요 : ");
+        String cpwd = scan.nextLine();
+        int result = uc.pointAdd(newPoint , cpwd);
+        if(result == 1){
+            System.out.println("[안내]포인트 충전이 완료되었습니다");
+        }else{
+            System.out.println("[경고]비밀번호가 일치하지 않습니다");
+        }return 0;
+    }
+
+
+
+
+
+
     } // class END
 
 
