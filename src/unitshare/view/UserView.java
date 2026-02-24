@@ -150,6 +150,7 @@ public class UserView {
         } else {
             System.out.println("[경고] 로그인에 실패하였습니다.");
         }
+
     } // m END
 
     // 로그아웃 페이지 view

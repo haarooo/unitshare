@@ -19,7 +19,10 @@ public class ProductView {
     //로그인 이후 페이지
     public void index2() {
         for (; ; ) {
-            try {
+            try { if(uc.isTimerOff()) return;
+                System.out.println("\n--------------------------------------------------");
+                System.out.println("[안내] 아무런 활동이 없으시다면, 7초 뒤에 휴면계정으로 전환 및 자동 로그아웃됩니다.");
+                System.out.println("--------------------------------------------------\n");
                 System.out.println("\n[ UNIT SHARE FOR SOLO ]");
                 System.out.println("--------------------------------------------------");
                 System.out.print(" 1.로그아웃 🏠   ");
@@ -31,12 +34,12 @@ public class ProductView {
                 System.out.println("6.내가올린글삭제 ❌");
                 System.out.print(" 7.구매취소 🚫");
                 System.out.print("  8. 거래현황 ");
-                System.out.print(" 9. 비밀번호 변경");
-                System.out.println(" 10. 포인트 충전 ");
+                System.out.println(" 9. 비밀번호 변경");
                 System.out.println("--------------------------------------------------");
                 System.out.print("선택 > ");
                 int ch = scan.nextInt();
                 scan.nextLine();
+                if(uc.isTimerOff()) return;
                 if (ch == 1) {UserView.getInstance().logout();}
                 else if (ch == 2) {productAdd();}
                 else if (ch == 3) {findAll();}
@@ -62,13 +65,19 @@ public class ProductView {
     public void productAdd(){
         Scanner scan = new Scanner(System.in);
         System.out.print("제품명 : "); String pname = scan.nextLine();
+        if(uc.isTimerOff()) return;
         System.out.print("가격 : "); int pprice = scan.nextInt();
         scan.nextLine();
+        if(uc.isTimerOff()) return;
         System.out.print("설명 : "); String pcontent = scan.nextLine();
+        if(uc.isTimerOff()) return;
         System.out.print("인원수 : "); int people = scan.nextInt();
+        if(uc.isTimerOff()) return;
         if(people > 5){System.out.println("최대 4명까지 가능합니다");return;}
         scan.nextLine();
+        if(uc.isTimerOff()) return;
         System.out.print("오픈채팅링크 : "); String openchat = scan.nextLine();
+        if(uc.isTimerOff()) return;
         int result = pc.productAdd(pname, pprice ,pcontent ,people ,openchat);
         if(result == 1){
             System.out.println("[안내] 물품등록 완료");
@@ -150,8 +159,10 @@ public class ProductView {
         System.out.println("====================================================================");
         System.out.print("취소하고싶은 게시물 번호를 입력하세요.");
         int pno = scan.nextInt();
+        if(uc.isTimerOff()) return;
         System.out.print("비밀번호 입력:");
         String pwd = scan.next();
+        if(uc.isTimerOff()) return;
         boolean result = pc.GroupCancel(pno,pwd);
     }
 
@@ -169,8 +180,11 @@ public class ProductView {
 
         System.out.println("삭제할 게시물 번호를 입력해주세요.");
         int pno = scan.nextInt();
+        if(uc.isTimerOff()) return;
+
         System.out.print("비밀번호 입력:");
         String pwd = scan.next();
+        if(uc.isTimerOff()) return;
         boolean result = pc.BoardCancel(pno,pwd);
     }
 
@@ -205,11 +219,12 @@ public class ProductView {
         System.out.print("상태 변경할 물품 번호 입력 : ");
         int pno = scan.nextInt();
         System.out.println("----------------------- [ 거래 현황 ] -----------------------");
+        if(uc.isTimerOff()) return;
+        System.out.println("----------------------- [ 거래 관리 ] -----------------------");
         System.out.println(" 1. 거래준비(동의) ✅ | 2. 포인트 입금 💰 | 3. 거래완료 🏁 | 0. 뒤로가기");
         System.out.print(" 선택 > ");
         int ch = scan.nextInt();
-        if (ch == 0) {return;}
-
+        if(uc.isTimerOff()) return;
         if (ch == 0) return;
         int uno = uc.getLoginSession();
 
