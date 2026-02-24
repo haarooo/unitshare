@@ -55,6 +55,7 @@ public class ProductDao {
             int count = ps.executeUpdate();
             if (count == 1) {
 
+                //가장 최신의 물품번호 가져오기
                 String sql2 = "select * from product order By pno desc limit 1";
                 PreparedStatement ps1 = conn.prepareStatement(sql2);
                 ResultSet rs = ps1.executeQuery();
@@ -471,7 +472,7 @@ public class ProductDao {
                     if (completeCount == totalPeople) {
                         int perPrice = pprice / totalPeople;
                         int finalAmount = pprice - perPrice;
-                        // 주최자에게 보관 중이던 제품 총액(pprice) 입금
+                        // 주최자에게 보관 중이던 포인트 입금
                         String sql5 = "update user SET point = point + ? WHERE uno = ?";
                         PreparedStatement ps5 = conn.prepareStatement(sql5);
                         ps5.setInt(1, finalAmount);
@@ -482,9 +483,9 @@ public class ProductDao {
                         }
                     }
                 }
-                return 1; // 내 상태 변경 성공 정산 여부와 관계없이 본인 처리는 끝
+                return 1; // 거래완료
             } else {
-                return 2; // 업데이트 실패 쿼리는 돌았으나 영향받은 행 없음
+                return 2; // 업데이트 실패
             }
 
         } catch (Exception e) {
