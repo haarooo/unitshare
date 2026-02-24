@@ -34,7 +34,8 @@ public class ProductView {
                 System.out.println("6.내가올린글삭제 ❌");
                 System.out.print(" 7.구매취소 🚫");
                 System.out.print("  8. 거래현황 ");
-                System.out.println(" 9. 비밀번호 변경");
+                System.out.print(" 9. 비밀번호 변경");
+                System.out.println(" 10. 포인트 충전");
                 System.out.println("--------------------------------------------------");
                 System.out.print("선택 > ");
                 int ch = scan.nextInt();
@@ -107,6 +108,7 @@ public class ProductView {
 
             System.out.print("\n신청할 번호 선택 (이전: b / 다음: p / 뒤로가기: 0): ");
             String next = scan.next();
+            if(uc.isTimerOff()) return;
             //페이지 로직
             if (next.equalsIgnoreCase("p")) {
                 if (page < totalPage) page++;

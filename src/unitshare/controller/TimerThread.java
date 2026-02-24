@@ -20,7 +20,7 @@ public class TimerThread extends Thread {
                 try{ Thread.sleep(1000); // 1초 대기
                     second++;
                     // 타이머가 10초 지났을 때
-                    if( second > 10){
+                    if( second > 60){
                         System.out.println("[안내] 장기간 활동이 없으므로 메인페이지로 돌아갑니다.");
                         uc.getUd().loginStatement(uno); // DB를 '휴면계정'으로 상태 변경
                         uc.logout(); // 자동 로그아웃

@@ -96,6 +96,7 @@ select*from user;
 use unishare;
 select*from product;
 alter table product change plink openchat LONGTEXT;
+alter table user ADD point INT DEFAULT 0;
 select*from participant;
 select*from user;
 select*from loginStatement;

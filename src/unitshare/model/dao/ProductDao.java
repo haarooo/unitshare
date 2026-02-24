@@ -113,33 +113,6 @@ public class ProductDao {
     }
 
 
-//        //페이징처리
-//    //22. 전체 공동구매 목록조회
-//    public ArrayList<ProductDto> findAll(){
-//        ////페이징처리
-//        int limit=5; //제한
-//        int begin=13;
-//        ArrayList<ProductDto> products = new ArrayList<>();
-//        try{
-//            String sql = "SELECT *, (SELECT COUNT(*) FROM participant WHERE participant.pno = product.pno) AS cpeople FROM product";
-//            PreparedStatement ps = conn.prepareStatement(sql);
-//            ResultSet rs = ps.executeQuery();
-//            while(rs.next()){
-//                int pno = rs.getInt("pno");
-//                String pname = rs.getString("pname");
-//                int pprice = rs.getInt("pprice");
-//                String pcontent = rs.getString("pcontent");
-//                String pdate = rs.getString("pdate");
-//                String openchat = rs.getString("openchat");
-//                int people = rs.getInt("people");
-//                int cpeople = rs.getInt("cpeople");
-//                ProductDto productDto = new ProductDto(pno , pname , pprice , pcontent , pdate , openchat , people, cpeople);
-//                products.add(productDto);
-//
-//            }
-//        }catch(SQLException e){System.out.println("sql 문법문제 2" + e);}
-//        return products;
-
 
     //공동구매 신청 조회
     public ArrayList<ProductDto> findAll(int page, int pageSize) {
